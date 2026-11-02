@@ -1,0 +1,109 @@
+{
+  "name": "kmmi/backend",
+  "description": "KMMI backend API (Symfony 7.4 + API Platform)",
+  "type": "project",
+  "license": "proprietary",
+  "minimum-stability": "stable",
+  "prefer-stable": true,
+  "require": {
+    "php": "^8.4",
+    "ext-ctype": "*",
+    "ext-exif": "*",
+    "ext-gd": "*",
+    "ext-iconv": "*",
+    "ext-json": "*",
+    "api-platform/doctrine-orm": "^4.2",
+    "api-platform/symfony": "^4.0",
+    "doctrine/dbal": "^4.2",
+    "doctrine/doctrine-bundle": "^2.13",
+    "doctrine/doctrine-migrations-bundle": "^3.5",
+    "doctrine/orm": "^3.3",
+    "gedmo/doctrine-extensions": "^3.21",
+    "gesdinet/jwt-refresh-token-bundle": "^1.4",
+    "gregwar/image": "^2.1",
+    "lexik/jwt-authentication-bundle": "^3.1",
+    "monolog/monolog": "^3.6",
+    "nelmio/cors-bundle": "^2.5",
+    "stof/doctrine-extensions-bundle": "^1.10",
+    "symfony/asset": "^7.4",
+    "symfony/console": "^7.4",
+    "symfony/dotenv": "^7.4",
+    "symfony/expression-language": "^7.4",
+    "symfony/flex": "^2.8",
+    "symfony/framework-bundle": "^7.4",
+    "symfony/property-access": "^7.4",
+    "symfony/property-info": "^7.4",
+    "symfony/rate-limiter": "^7.4",
+    "symfony/runtime": "^7.4",
+    "symfony/security-bundle": "^7.4",
+    "symfony/serializer": "^7.4",
+    "symfony/twig-bundle": "^7.4",
+    "symfony/validator": "^7.4",
+    "symfony/yaml": "^7.4"
+  },
+  "require-dev": {
+    "doctrine/doctrine-fixtures-bundle": "^3.6",
+    "phpmd/phpmd": "^2.15",
+    "phpstan/phpstan": "^1.12",
+    "phpunit/phpunit": "^11.5",
+    "squizlabs/php_codesniffer": "^3.10",
+    "symfony/browser-kit": "^7.4",
+    "symfony/http-client": "^7.4",
+    "symfony/maker-bundle": "^1.61",
+    "symfony/phpunit-bridge": "^7.4",
+    "symfony/web-profiler-bundle": "^7.4",
+    "zenstruck/foundry": "^2.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "App\\Tests\\": "tests/"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "symfony/flex": true,
+      "symfony/runtime": true
+    },
+    "sort-packages": true
+  },
+  "scripts": {
+    "static-code-analyze": "@qa",
+    "qa:phpcs": "sh -c 'if [ -d src ]; then vendor/bin/phpcs --standard=PSR12 --extensions=php --ignore=migrations/*,src/Migrations/* src tests config; else echo \"Skip PHPCS: src directory missing.\"; fi'",
+    "qa:phpmd": "sh -c 'if [ -d src ]; then vendor/bin/phpmd src,tests,config text cleancode,codesize,controversial,design,naming,unusedcode --exclude migrations/*,src/Migrations/*; else echo \"Skip PHPMD: src directory missing.\"; fi'",
+    "qa:phpstan": "sh -c 'if [ -d src ]; then vendor/bin/phpstan analyse src tests --memory-limit=1G; else echo \"Skip PHPStan: src directory missing.\"; fi'",
+    "qa": [
+      "@qa:phpcs",
+      "@qa:phpmd",
+      "@qa:phpstan"
+    ],
+    "app:populate-search-index": "sh -c 'if [ -x bin/console ] && php bin/console list --raw 2>/dev/null | grep -q \"^fos:elastica:populate$\"; then php bin/console fos:elastica:populate; else echo \"Skip search index populate (command not available).\"; fi'",
+    "regenerate-dev-db": [
+      "@php bin/console doctrine:database:drop --if-exists --force --no-interaction",
+      "@php bin/console doctrine:database:create --if-not-exists --no-interaction",
+      "@php bin/console doctrine:migrations:migrate --no-interaction",
+      "@php bin/console doctrine:fixtures:load --no-interaction",
+      "@app:populate-search-index"
+    ],
+    "regenerate-test-db": [
+      "@php bin/console doctrine:database:drop --if-exists --force --env=test --no-interaction",
+      "@php bin/console doctrine:database:create --if-not-exists --env=test --no-interaction",
+      "@php bin/console doctrine:schema:update --env=test --force --no-interaction",
+      "@php bin/console doctrine:fixtures:load --env=test --no-interaction",
+      "@app:populate-search-index"
+    ]
+  },
+  "conflict": {
+    "symfony/symfony": "*"
+  },
+  "extra": {
+    "symfony": {
+      "allow-contrib": false,
+      "require": "^7.4"
+    }
+  }
+}
