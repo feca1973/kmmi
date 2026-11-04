@@ -56,7 +56,20 @@ abstract class LegacyCrudController extends AbstractCrudController
      */
     public function configureFields(string $pageName): iterable
     {
-        return $pageName === Crud::PAGE_INDEX ? $this->indexFields() : $this->formFields();
+        return $pageName === Crud::PAGE_INDEX ? $this->switchableIndexFields() : $this->formFields();
+    }
+
+    /**
+     * The yes/no columns of the list are switches that can be changed in the list itself, as in the legacy admin (the
+     * form has a plain check box).
+     *
+     * @return iterable<FieldInterface>
+     */
+    private function switchableIndexFields(): iterable
+    {
+        foreach ($this->indexFields() as $field) {
+            yield $field instanceof BooleanField ? $field->renderAsSwitch() : $field;
+        }
     }
 
     public function configureCrud(Crud $crud): Crud

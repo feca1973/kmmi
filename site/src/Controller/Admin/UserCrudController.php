@@ -46,7 +46,7 @@ final class UserCrudController extends LegacyCrudController
             ->setFormTypeOptions(['required' => $pageName === Crud::PAGE_NEW, 'always_empty' => true])
             ->onlyOnForms();
         yield EmailField::new('email', 'Email');
-        yield BooleanField::new('enabled', 'Aktív')->renderAsSwitch(false);
+        yield BooleanField::new('enabled', 'Aktív')->renderAsSwitch($pageName === Crud::PAGE_INDEX);
         yield ChoiceField::new('roles', 'Jogok')
             ->setChoices(self::ROLES)
             ->allowMultipleChoices()

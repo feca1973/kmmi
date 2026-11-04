@@ -32,6 +32,17 @@ function initPickers(root = document) {
     });
 }
 
+// The column the list is sorted by is gray in all its rows (as in the legacy list): its cells get a class.
+function markSortedColumn() {
+    document.querySelectorAll('table.datagrid').forEach((table) => {
+        const index = [...table.querySelectorAll(':scope > thead th')].findIndex((th) => th.classList.contains('sorted'));
+        if (index < 0) {
+            return;
+        }
+        table.querySelectorAll(':scope > tbody > tr').forEach((row) => row.children[index]?.classList.add('kmmi-sorted'));
+    });
+}
+
 function initAll(root = document) {
     initPickers(root);
     initFileChoosers(root);
@@ -43,6 +54,7 @@ function initAll(root = document) {
 
 document.addEventListener('DOMContentLoaded', () => {
     initAll();
+    markSortedColumn();
 
     // Rows added later (collections) get the same widgets.
     new MutationObserver((mutations) => {
