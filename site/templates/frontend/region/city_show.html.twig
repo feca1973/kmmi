@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ city.defaultTitle|plain_text }} | kárpátaljai települések | {{ parent() }}{% endblock %}
+{% block ogTitle %}{{ city.defaultTitle|plain_text }}{% endblock %}
+{% block ogDescription %}{{ city.lead|plain_text }}{% endblock %}
+{% block ogImage %}{{ (city.image ?: uniqueContent('logo'))|uploaded_image('og_image') }}{% endblock %}
+{% block metaDescription %}{{ city.lead|plain_text }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ include('frontend/shared/breadcrumb.html.twig', {
+        crumbs: [
+            {label: 'Kezdőlap', url: path('app_homepage')},
+            {label: 'Adattár'},
+            {label: 'Települések', url: path('cities_list')},
+            {label: city.defaultTitle}
+        ]
+    }) }}
+{% endblock %}
+
+{% block body %}
+    <div class="body-content list">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 content-col">
+                <div class="content article-title">
+                    <h1>{{ city.defaultTitle }} - {{ city.regions.defaultTitle }}</h1>
+                </div>
+            </div>
+            <div class="col-md-8 col-sm-12 content-col">
+                <div class="content">
+                    <div class="lead-container">
+                        {{ city.lead|raw }}
+                        {% if city.image %}
+                            <img src="{{ city.image|uploaded_image('content800') }}" srcset="{{ city.image|uploaded_srcset('article') }}" sizes="(max-width: 768px) 100vw, 700px" alt="{{ city.defaultTitle }}">
+                        {% endif %}
+                    </div>
+                    {{ include('frontend/shared/share.html.twig', {title: city.defaultTitle}) }}
+                    <div class="article-content">
+                        {{ city.content|raw }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12 content-col">
+                <twig:SidebarNews size="4" columns="1" />
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ type.defaultName|plain_text }} - {{ parent() }}{% endblock %}
+{% block ogTitle %}{{ type.defaultName|plain_text }} - {{ uniqueContent('page-title') }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ include('frontend/shared/breadcrumb.html.twig', {
+        crumbs: [{label: 'Kezdőlap', url: path('app_homepage')}, {label: type.defaultName}],
+        heading: true
+    }) }}
+{% endblock %}
+
+{% block body %}
+    <div class="body-content list">
+        <div class="row">
+            <div class="col-md-8 col-sm-12 content-col">
+                <div class="content">
+                    <ul class="list-unstyled">
+                        {% if appointments|length == 0 %}
+                            <li>
+                                <h2>Nincs megjeleníthető tartalom</h2>
+                            </li>
+                        {% endif %}
+                        {% for article in appointments %}
+                            <li>
+                                <h2><a href="{{ path('news_single', {'type': type.slug, 'slug': article.slug}) }}">{{ article.title|raw }}</a></h2>
+                                <p class="article-update-date">Írta: {{ article.authorName }} | Forrás: {{ article.authorSource }} | {{ normalizedDate(article.pubDate) }}</p>
+                                {% if article.mainImage %}
+                                    {{ include('frontend/shared/list_image.html.twig', {image: article.mainImage, alt: article.defaultTitle}) }}
+                                {% endif %}
+                                {{ article.lead|raw }}
+                                <div class="clear"></div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    <div class="navigation">
+                        {{ knp_pagination_render(appointments) }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12 content-col">
+                <twig:SidebarMonuments size="3" />
+                <twig:SidebarEvents size="6" />
+                <twig:SidebarGalleries size="3" />
+            </div>
+        </div>
+    </div>
+{% endblock %}

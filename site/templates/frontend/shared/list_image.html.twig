@@ -1,0 +1,2 @@
+{# The picture of a list item; `sizes` tells the browser the displayed width, so it fetches the smallest fitting image. #}
+<img class="list-image" alt="{{ alt|plain_text }}" src="{{ image|uploaded_image('card345') }}" srcset="{{ image|uploaded_srcset('list') }}" sizes="{{ sizes|default('(max-width: 768px) 100vw, 175px') }}" loading="lazy">

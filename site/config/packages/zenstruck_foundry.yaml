@@ -1,6 +1,11 @@
 when@dev: &dev
     # See full configuration: https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#full-default-bundle-configuration
     zenstruck_foundry:
+        # Set explicitly (current behavior) to avoid Foundry 2.x deprecation notices about the changing defaults.
+        enable_auto_refresh_with_lazy_objects: true
+        orm:
+            reset:
+                mode: schema
         persistence:
             # Flush only once per call of `PersistentObjectFactory::create()`
             flush_once: true

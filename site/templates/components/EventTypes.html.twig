@@ -1,0 +1,8 @@
+<div class="content">
+    <h2><i class="fa fa-calendar" aria-hidden="true"></i>Események</h2>
+    <ul>
+        {% for row in this.types %}
+            <li><a href="{{ path('event_list_by_type', {'type': row.type.slug}) }}">{{ row.type.name }} ({{ row.events }} db)</a></li>
+        {% endfor %}
+    </ul>
+</div>

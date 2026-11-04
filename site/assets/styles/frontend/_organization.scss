@@ -1,0 +1,29 @@
+@use 'colors' as *;
+@use 'fonts' as *;
+
+.floating-box {
+  float: right;
+  background: $breadcrumb_bg;
+  width: 50%;
+  padding: 7px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+
+.floating-box.full-page {
+  width: 100%;
+}
+
+.floating-box .box-title {
+  font-weight: bold;
+  border-bottom: 1px solid #b7b7b7;
+  padding-bottom: 3px;
+  text-transform: $uppercase_text;
+  font-size: 110% !important;
+}
+
+.floating-box td,
+.floating-box th {
+  padding: 5px;
+  vertical-align: top;
+}

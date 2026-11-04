@@ -1,0 +1,89 @@
+// The right edge of the search box is the right edge of the text blocks of the page (the .container is centered, its
+// content is 15px inside it); 100% is the width of the bar (the window without the bar's padding).
+@media (min-width: 992px) {
+  .navbar-expand-lg .navbar-collapse {
+    margin-right: calc((100% - 960px) / 2 + 15px);
+  }
+}
+
+@media (min-width: 1200px) {
+  .navbar-expand-lg .navbar-collapse {
+    margin-right: calc((100% - 1140px) / 2 + 15px);
+  }
+}
+
+@media (max-width: 992px) {
+  .navbar-nav .dropdown-menu {
+    float: left;
+  }
+
+  .nav-item.show .dropdown-menu.show {
+    max-height: 250px;
+    overflow: scroll;
+  }
+}
+
+// The opened menu of the narrow window can be higher than the window: the fixed header scrolls itself, not the page.
+@media (max-width: 991.98px) {
+  header.fixed-top {
+    max-height: 100vh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  // The columns of the mega menu are two equal halves (left and right), not floats that slip under the tallest one; on a
+  // phone they are under each other. The header scrolls, so the panel does not need its own scroll bar.
+  .feature-menu.navbar-nav {
+    width: 100%;
+  }
+
+  .navbar-nav .dropdown-menu.show {
+    float: none;
+    width: 100%;
+    max-height: none;
+    overflow: visible;
+    columns: 2 14rem;
+    column-gap: 0;
+  }
+
+  .dropdown-menu .dropdown-menu-col {
+    float: none;
+    break-inside: avoid;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-top .header-top-right a,
+  .header-top .header-top-right .header-top-item {
+    margin-right: 10px;
+  }
+
+  .list-image {
+    width: 100%;
+    float: none;
+    display: block;
+    margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 554px) {
+  .breadcrumb {
+    margin-top: 130px;
+  }
+}
+
+@media (max-width: 450px) {
+  .header-top .header-top-right a,
+  .header-top .header-top-right .header-top-item {
+    font-size: 12px;
+    margin-right: 0;
+    display: block;
+  }
+}
+
+@media (min-width: 992px) {
+  .navbar-expand-lg .navbar-nav .nav-link {
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
+  }
+}

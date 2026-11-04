@@ -1,0 +1,16 @@
+<div class="content">
+    <h2><i class="fa fa-image" aria-hidden="true"></i>Képtár</h2>
+    <ul>
+        {# A gallery without images is not shown (it is not even a page). #}
+        {% for gallery in this.galleries|filter(gallery => gallery.galleryImages|length > 0) %}
+            <li>
+                <h3><a href="{{ path('gallery_single', {'slug': gallery.slug}) }}">{{ gallery.name|raw }}</a></h3>
+                <div class="content-col-info">
+                    <a href="{{ path('gallery_single', {'slug': gallery.slug}) }}">
+                        <img alt="{{ gallery.name|plain_text }}" src="{{ gallery.coverImage|uploaded_image('gallery300') }}" width="300" height="225" loading="lazy">
+                    </a>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</div>

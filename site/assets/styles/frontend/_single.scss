@@ -1,0 +1,54 @@
+@use 'colors' as *;
+@use 'fonts' as *;
+
+/* SINGLE PAGE */
+.article-title h1 {
+  font-size: 40px;
+  line-height: 50px;
+  margin: 0;
+}
+
+.lead-container *,
+.article-content * {
+  font-size: 14px !important;
+}
+
+.lead-container img,
+.article-content img {
+  width: 100%;
+  height: auto;
+}
+
+.article-content {
+  padding-top: 15px;
+}
+
+.share-container {
+  padding: 5px 0;
+  background: $breadcrumb_bg;
+  border-radius: 10px;
+}
+
+.article-title p.article-update-date {
+  padding-top: 10px;
+  font-style: italic;
+}
+
+.article-title p.article-place {
+  margin-bottom: 0;
+  padding-top: 0;
+  margin-top: -10px;
+}
+
+.single-page-block-title {
+  background-color: $sitebar_title_bg;
+  padding: 5px 15px;
+  color: $white_color;
+  text-transform: $uppercase_text;
+  margin-top: 24px;
+}
+
+.body-content.list .content-col .article-content ul {
+  list-style-type: square;
+  margin-left: 15px;
+}

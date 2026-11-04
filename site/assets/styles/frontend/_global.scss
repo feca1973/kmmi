@@ -1,0 +1,71 @@
+*:focus {
+  outline: none;
+}
+
+.overSrc,
+.clickable {
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
+.clear {
+  clear: both;
+}
+
+// The size of the images of the rich text editor (assets/admin/ckeditor.js): a share of the width of the text. A block
+// image is a figure with the class, an inline image is the img itself.
+@each $percent in (25, 50, 75, 100) {
+  figure.image-size-#{$percent} {
+    width: #{$percent + '%'};
+    margin-right: auto;
+    margin-left: auto;
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  img.image-size-#{$percent} {
+    width: #{$percent + '%'};
+    height: auto;
+  }
+}
+
+// Text wraps around the image: it floats to the left or to the right (on a phone it is a block of the full width).
+@each $percent in (25, 50, 75) {
+  .image-left-#{$percent},
+  .image-right-#{$percent} {
+    width: #{$percent + '%'};
+    height: auto;
+    margin-bottom: 1rem;
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  .image-left-#{$percent} {
+    float: left;
+    margin-right: 1.5rem;
+  }
+
+  .image-right-#{$percent} {
+    float: right;
+    margin-left: 1.5rem;
+  }
+
+  @media (max-width: 575.98px) {
+    .image-left-#{$percent},
+    .image-right-#{$percent} {
+      float: none;
+      width: 100%;
+      margin-right: 0;
+      margin-left: 0;
+    }
+  }
+}

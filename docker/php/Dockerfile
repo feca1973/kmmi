@@ -1,4 +1,4 @@
-FROM php:8.4-fpm-alpine3.21
+FROM php:8.5-fpm-alpine
 
 RUN set -eux; \
     apk add --no-cache --virtual .build-deps \
@@ -27,13 +27,24 @@ RUN set -eux; \
         exif \
         gd \
         intl \
-        opcache \
         pdo_mysql \
         zip; \
-    pecl install redis; \
-    docker-php-ext-enable redis; \
     apk del --no-cache .build-deps
 
-COPY --from=composer:2.8.5 /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
+
+# Dart Sass, the newest release (the Sass bundle would download its own, older, pinned version when `sass` is not in
+# the PATH). The musl build is for Alpine.
+RUN set -eux; \
+    case "$(uname -m)" in \
+        x86_64) sass_arch=x64 ;; \
+        aarch64) sass_arch=arm64 ;; \
+        *) echo "Unsupported architecture: $(uname -m)" >&2; exit 1 ;; \
+    esac; \
+    sass_version="$(curl -fsSLI -o /dev/null -w '%{url_effective}' https://github.com/sass/dart-sass/releases/latest | sed 's#.*/##')"; \
+    curl -fsSL "https://github.com/sass/dart-sass/releases/download/${sass_version}/dart-sass-${sass_version}-linux-${sass_arch}-musl.tar.gz" \
+        | tar -xz -C /opt; \
+    ln -s /opt/dart-sass/sass /usr/local/bin/sass; \
+    sass --version
 
 WORKDIR /var/www/html

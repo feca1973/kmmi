@@ -1,0 +1,87 @@
+# Images of the public pages are never sent as uploaded (AGENTS.md): every use has a named filter set that sizes the
+# image to its display size and converts it to .webp. The result is cached in public/media/cache; nginx serves
+# cached files directly, only the first request of an image reaches PHP.
+liip_imagine:
+    driver: gd
+    twig:
+        mode: lazy
+    resolvers:
+        default:
+            web_path:
+                web_root: '%kernel.project_dir%/public'
+                cache_prefix: media/cache
+    loaders:
+        local:
+            filesystem:
+                data_root: '%kernel.project_dir%/public'
+    default_filter_set_settings:
+        data_loader: local
+    filter_sets:
+        # The widths of the legacy cropResize(width, null) calls: only shrinks, keeps the proportions.
+        thumb160: &webp
+            format: webp
+            quality: 85
+            filters:
+                downscale: { max: [160, 4000] }
+        card345:
+            <<: *webp
+            filters:
+                downscale: { max: [345, 4000] }
+        content500:
+            <<: *webp
+            filters:
+                downscale: { max: [500, 4000] }
+        content800:
+            <<: *webp
+            filters:
+                downscale: { max: [800, 4000] }
+        # The slider: legacy zoomCrop(1920, 600, '#FFFFFF', 0, 0), the image covers the whole area and the rest is cut
+        # off at the right and at the bottom. Not "thumbnail": that one cuts around the center (ZoomCropFilterLoader).
+        slider:
+            <<: *webp
+            filters:
+                zoom_crop: { size: [1920, 600] }
+        # The gallery covers: legacy zoomCrop(300, 225, '#FFFFFF', 0, 0).
+        gallery300:
+            <<: *webp
+            filters:
+                zoom_crop: { size: [300, 225] }
+        # The logo of the header (displayed at 80 px, twice as big for the high resolution screens).
+        logo:
+            <<: *webp
+            filters:
+                downscale: { max: [160, 160] }
+        # The covers of the gallery list: legacy zoomCrop(450, 450, '#FFFFFF', 0, 0).
+        gallery450:
+            <<: *webp
+            filters:
+                zoom_crop: { size: [450, 450] }
+        # The big image of the gallery lightbox.
+        lightbox:
+            <<: *webp
+            filters:
+                downscale: { max: [1920, 1920] }
+        content1200:
+            <<: *webp
+            filters:
+                downscale: { max: [1200, 4000] }
+        # The preview of the shared pages (og:image): social sites take jpeg and png for sure.
+        og_image:
+            format: jpeg
+            quality: 85
+            filters:
+                downscale: { max: [1200, 1200] }
+
+when@dev:
+    liip_imagine:
+        loaders:
+            # DEV ONLY: the uploaded files of the live site are not in the dev environment; an image that is
+            # missing locally is read from the live site (see also docker/nginx/nginx.conf).
+            live:
+                stream:
+                    wrapper: 'https://kmmi.org.ua/'
+            local_or_live:
+                chain:
+                    loaders: [local, live]
+        default_filter_set_settings:
+            data_loader: local_or_live

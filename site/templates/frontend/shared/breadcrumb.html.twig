@@ -1,0 +1,20 @@
+{# crumbs: [{label, url?}, ...], the last one is the current page.
+   `heading`: the last crumb is also the H1 of the page; `title`: the crumbs have the font of the headings (the legacy
+   list pages; `heading` implies it). The links are on their own lines on purpose: the whitespace after the divider is
+   part of the legacy look. #}
+{% set heading = heading|default(false) %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb{% if heading or title|default(false) %} breadcrumb-title{% endif %}">
+        {% for crumb in crumbs %}
+            {% if loop.last %}
+                <li class="breadcrumb-item active" aria-current="page">{% if heading %}<h1>{{ crumb.label|raw }}</h1>{% else %}{{ crumb.label|raw }}{% endif %}</li>
+            {% elseif crumb.url|default(null) %}
+                <li class="breadcrumb-item">
+                    <a href="{{ crumb.url }}">{{ crumb.label|raw }}</a>
+                </li>
+            {% else %}
+                <li class="breadcrumb-item">{{ crumb.label|raw }}</li>
+            {% endif %}
+        {% endfor %}
+    </ol>
+</nav>

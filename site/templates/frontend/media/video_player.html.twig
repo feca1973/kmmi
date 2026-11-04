@@ -1,0 +1,6 @@
+{# The type of the source tells the browser if it can play the file (the old .flv files cannot be played any more). #}
+{% set types = {mp4: 'video/mp4', webm: 'video/webm', ogv: 'video/ogg', flv: 'video/x-flv'} %}
+<video width="100%" height="auto" controls>
+    <source src="{{ path }}" type="{{ types[path|split('.')|last|lower]|default('video/mp4') }}">
+    A böngésződ nem tudja lejátszani ezt a videót. <a href="{{ path }}">Letöltés</a>
+</video>

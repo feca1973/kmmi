@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ typeTitle }} - Multimédia - {{ parent() }}{% endblock %}
+{% block ogTitle %}{{ typeTitle }} - Multimédia - {{ uniqueContent('page-title') }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ include('frontend/shared/breadcrumb.html.twig', {
+        crumbs: [{label: 'Kezdőlap', url: path('app_homepage')}, {label: 'Adattár'}, {label: 'Multimédia'}, {label: typeTitle}],
+        title: true
+    }) }}
+{% endblock %}
+
+{% block body %}
+    <div class="body-content list">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 content-col">
+                <div class="content article-title">
+                    <h1>{{ typeTitle }}</h1>
+                </div>
+            </div>
+            <div class="col-md-8 col-sm-12 content-col">
+                <div class="content">
+                    <ul class="list-unstyled">
+                        {% for media in appointments %}
+                            <li>
+                                <h2><a href="{{ path(media.type.value ~ '_single', {'slug': media.slug}) }}">{{ media.title|raw }}</a></h2>
+                                {{ media.lead|raw }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    <div class="navigation">
+                        {{ knp_pagination_render(appointments) }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12 content-col">
+                <twig:SidebarNews size="3" columns="1" />
+                <twig:SidebarEvents size="3" />
+            </div>
+        </div>
+    </div>
+{% endblock %}

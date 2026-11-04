@@ -1,0 +1,37 @@
+<div class="col-md-8">
+    <div class="row">
+        {% for feed in this.feeds %}
+            <div class="col-md-4 col-sm-12 rss-col">
+                <h2><a target="_blank" rel="noopener" href="{{ feed.url }}">{{ feed.title }}</a></h2>
+                <ul>
+                    {% for article in feed.articles %}
+                        <li><a target="_blank" rel="noopener" href="{{ article.link }}">{{ article.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+<div class="col-md-4">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 rss-col">
+            <div
+                    class="fb-page"
+                    data-href="https://www.facebook.com/kmmi.org.ua/"
+                    data-tabs="timeline"
+                    data-small-header="false"
+                    data-adapt-container-width="true"
+                    data-hide-cover="false"
+                    data-height="350"
+                    data-show-facepile="true">
+                <blockquote
+                        cite="https://www.facebook.com/kmmi.org.ua/"
+                        class="fb-xfbml-parse-ignore">
+                    <a href="https://www.facebook.com/kmmi.org.ua/">
+                        Kárpátaljai Magyar Művelődési Intézet - www.kmmi.org.ua
+                    </a>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}404 Hiba | {{ parent() }}{% endblock %}
+{% block ogTitle %}404-es Hibaoldal{% endblock %}
+
+{% block breadcrumb %}
+    {{ include('frontend/shared/breadcrumb.html.twig', {
+        crumbs: [{label: 'Kezdőlap', url: path('app_homepage')}, {label: '404-es hibaoldal'}]
+    }) }}
+{% endblock %}
+
+{% block body %}
+    <div class="body-content list">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 content-col">
+                <div class="content article-title">
+                    <h1>A keresett oldal nem található</h1>
+                    <p>Úgy tűnik nem létező oldalra keveredtél. A további adateléréshez böngészd az alábbi listákat,
+                    vagy navigálj a felső menüben!</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12 content-col">
+                <twig:SidebarEvents size="6" />
+            </div>
+            <div class="col-md-4 col-sm-12 content-col">
+                <twig:SidebarNews size="4" columns="1" />
+            </div>
+            <div class="col-md-4 col-sm-12 content-col">
+                <twig:SidebarGalleries size="3" />
+            </div>
+        </div>
+    </div>
+{% endblock %}

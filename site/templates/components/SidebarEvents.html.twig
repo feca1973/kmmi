@@ -1,0 +1,19 @@
+<div class="content">
+    <h2><i class="fa fa-calendar" aria-hidden="true"></i>Események</h2>
+    <ul>
+        {% for event in this.events %}
+            <li>
+                <h3><a href="{{ path('event_single', {'type': event.type.slug, 'slug': event.slug}) }}">{{ event.title|raw }}</a></h3>
+                <div class="content-col-info">
+                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+                    Helyszín : <em>{{ event.placeName|raw }}</em>
+                </div>
+                <div class="content-col-info">
+                    <i class="fa fa-clock-o"></i>
+                    {{ eventDate(event.dateFrom, event.dateTo) }}
+                </div>
+                <div class="divider col-sm-12 col-md-10 offset-md-1"></div>
+            </li>
+        {% endfor %}
+    </ul>
+</div>

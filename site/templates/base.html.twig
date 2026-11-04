@@ -1,16 +1,106 @@
 <!DOCTYPE html>
-<html>
+<html lang="hu">
     <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <title>{% block title %}{{ uniqueContent('page-title') }}{% endblock %}</title>
+        <meta id="og-title" property="og:title" content="{% block ogTitle %}{{ uniqueContent('page-title') }}{% endblock %}">
+        <meta id="og-description" property="og:description" content="{% block ogDescription %}{{ block('metaDescription') }}{% endblock %}">
+        <meta id="og-url" property="og:url" content="{% block ogUrl %}{{ app.request.uri }}{% endblock %}">
+        <meta id="og-image" property="og:image" content="{% block ogImage %}{{ uniqueContent('logo')|uploaded_image('og_image') }}{% endblock %}">
+        <meta property="og:locale" content="hu_HU">
+        <meta property="og:site_name" content="{{ uniqueContent('page-title') }}">
+        <meta property="og:type" content="website">
+        <meta property="fb:app_id" content="451322861674978">
+        <meta id="meta-description" name="description" content="{% block metaDescription %}{{ uniqueContent('page-description') }}{% endblock %}">
+        <meta name="keywords" content="{{ uniqueContent('page-keywords') }}{% block metaKeywords %}{% endblock %}">
+        {% block robots %}{% endblock %}
+
         {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('styles/frontend.scss') }}">
+        {% endblock %}
+
+        <link rel="icon" href="/favicon.png" type="image/png">
+    </head>
+    <body>
+        {{ include('frontend/SEO/facebook_sdk.html.twig') }}
+        {% block header %}
+            <header class="fixed-top">
+                <a class="site-logo" href="{{ path('app_homepage') }}">
+                    {# The logo of the live site: an uploaded file (it is not one of the editable "unique" values). #}
+                    <img src="{{ '/uploads/images/logok/KMMI-Logo-3.png'|uploaded_image('logo') }}" alt="KMMI" width="80" height="80">
+                </a>
+
+                <div class="header-top">
+                    <div class="container-fluid">
+                        <div class="row align-items-center">
+                            <div class="col-lg-3 col-sm-1 col-1 header-top-left">&nbsp;</div>
+                            <div class="col-lg-9 col-sm-11 col-11 header-top-right">
+                                <span class="header-top-item">
+                                    <span class="lnr fa fa-phone"></span>
+                                    <span class="text">{{ uniqueContent('telefonszam') }}</span>
+                                </span>
+                                <a href="mailto:{{ uniqueContent('email') }}">
+                                    <span class="lnr fa fa-envelope"></span>
+                                    <span class="text">{{ uniqueContent('email') }}</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <div class="navbar-brand"></div>
+                    <button class="navbar-toggler navbar-toggler-left" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Menü">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                        <twig:MainMenu />
+                        <div class="search-form-container">
+                            {% block search %}
+                                {{ include('frontend/search/widget.html.twig') }}
+                            {% endblock %}
+                        </div>
+                    </div>
+                </nav>
+            </header>
+        {% endblock %}
+
+        {% block slider %}{% endblock %}
+
+        <div class="container content-container">
+            {% block breadcrumb %}{% endblock %}
+            {% block body %}{% endblock %}
+        </div>
+
+        {% block footer %}
+            <div class="container footer">
+                <div class="row">
+                    <twig:FooterFeeds />
+                </div>
+            </div>
+
+            <div class="container-fluid impress">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8">
+                            <a href="{{ uniqueContent('bga-logo-link') }}" target="_blank" rel="noopener">
+                                <img class="bga" src="{{ uniqueContent('bga-logo')|uploaded_image('content800') }}" alt="Támogatók">
+                            </a>
+                        </div>
+                        <div class="col-md-2"></div>
+                    </div>
+                </div>
+                <div class="container text-center">
+                    Copyright © {{ 'now'|date('Y') }}   KMMI
+                </div>
+            </div>
         {% endblock %}
 
         {% block javascripts %}
+            {{ importmap('app') }}
         {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
     </body>
 </html>

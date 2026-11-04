@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ gallery.name|plain_text }} - galériák - {{ parent() }}{% endblock %}
+{% block ogTitle %}{{ gallery.name|plain_text }} - galériák - {{ uniqueContent('page-title') }}{% endblock %}
+{% block ogImage %}{{ (gallery.coverImage ?: uniqueContent('logo'))|uploaded_image('og_image') }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ include('frontend/shared/breadcrumb.html.twig', {
+        crumbs: [
+            {label: 'Kezdőlap', url: path('app_homepage')},
+            {label: 'Adattár'},
+            {label: 'Multimédia'},
+            {label: 'Galériák', url: path('gallery_list')},
+            {label: gallery.name}
+        ]
+    }) }}
+{% endblock %}
+
+{% block body %}
+    <div class="body-content list">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 content-col">
+                <div class="content article-title">
+                    <h1>{{ gallery.name|raw }}</h1>
+                </div>
+            </div>
+            <div class="col-md-12 col-sm-12 content-col">
+                <div class="content">
+                    {{ include('frontend/shared/share.html.twig', {title: gallery.name}) }}
+
+                    <div id="gallery" class="article-content grid">
+                        {% for image in gallery.galleryImages %}
+                            <a href="{{ image.path|uploaded_image('lightbox') }}" class="grid-item glightbox" data-gallery="gallery" data-title="{{ image.name|plain_text }}">
+                                <img src="{{ image.path|uploaded_image('card345') }}" alt="{{ (image.name ?: gallery.name)|plain_text }}" width="345" loading="lazy">
+                            </a>
+                        {% endfor %}
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ importmap(['app', 'gallery']) }}
+{% endblock %}

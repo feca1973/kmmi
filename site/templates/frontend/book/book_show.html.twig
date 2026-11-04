@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ book.defaultTitle|plain_text }} | {{ type.name|plain_text }} | könyvtár | adattár | {{ parent() }}{% endblock %}
+{% block ogTitle %}{{ book.defaultTitle|plain_text }} | {{ type.name|plain_text }} | könyvtár | adattár{% endblock %}
+{% block ogDescription %}{{ book.lead|plain_text }}{% endblock %}
+{% block ogImage %}{{ (book.mainImage ?: uniqueContent('logo'))|uploaded_image('og_image') }}{% endblock %}
+{% block metaDescription %}{{ book.lead|plain_text }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ include('frontend/shared/breadcrumb.html.twig', {
+        crumbs: [{label: 'Kezdőlap', url: path('app_homepage')}, {label: 'Adattár'}, {label: 'Könyvtár'}]
+            |merge(type.parent ? [{label: type.parent.name}] : [])
+            |merge([
+                {
+                    label: type.name,
+                    url: type.parent
+                        ? path('library_list', {slug: type.parent.slug, subSlug: type.slug})
+                        : path('library_list', {slug: type.slug})
+                },
+                {label: book.defaultTitle}
+            ])
+    }) }}
+{% endblock %}
+
+{% block body %}
+    <div class="body-content list">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 content-col">
+                <div class="content article-title">
+                    <h1>{{ book.defaultTitle|raw }}</h1>
+                    <p class="article-update-date">Írta: {{ book.bookAuthor }} | A kiadás éve: {{ book.bookReleaseYear }}</p>
+                </div>
+            </div>
+            <div class="col-md-8 col-sm-12 content-col">
+                <div class="content">
+                    {{ include('frontend/shared/share.html.twig', {title: book.defaultTitle}) }}
+
+                    <div class="article-content">
+                        {{ book.lead|raw }}
+                        {% if book.mainImage %}
+                            <img src="{{ book.mainImage|uploaded_image('content800') }}" srcset="{{ book.mainImage|uploaded_srcset('article') }}" sizes="(max-width: 768px) 100vw, 700px" alt="{{ book.defaultTitle|plain_text }}">
+                        {% endif %}
+                    </div>
+
+                    <div class="article-content">
+                        {{ book.content|raw }}
+                    </div>
+
+                    {{ include('frontend/media/attachment.html.twig', {entity: book}) }}
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12 content-col">
+                <twig:SidebarNews size="6" columns="1" />
+            </div>
+        </div>
+    </div>
+{% endblock %}

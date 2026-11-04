@@ -1,0 +1,58 @@
+{# The menu editor: the items of a menu as a tree (assets/admin/menu-tree.js sorts, adds and removes the rows). The root
+   list holds one prototype of an item per level: a new item is made from the one of its level. #}
+
+{# "children" is written as form['children']: form.children is the list of the child fields of a form view. #}
+{# The row of the editor: EasyAdmin's collection row would render the prototype of the root list, the editor does it itself. #}
+{% block kmmi_menu_items_row %}
+    <div class="col-12">
+        <div class="mb-3 form-group">
+            {{- form_label(form) -}}
+            <div class="form-widget">
+                {{ form_widget(form) }}
+                {{- form_errors(form) -}}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block kmmi_menu_items_widget %}
+    {% if level == 1 %}
+        {% set prototype_1 = form.vars.prototype %}
+        {% set prototype_2 = prototype_1['children'].vars.prototype %}
+        {% set prototype_3 = prototype_2['children'].vars.prototype %}
+        <div class="kmmi-menu-tree"
+             data-name="{{ full_name }}"
+             data-max-level="3"
+             data-confirm="Biztos, hogy törölni szeretnéd a menüelemet?"
+             data-prototype-1="{{ form_widget(prototype_1)|e('html_attr') }}"
+             data-prototype-2="{{ form_widget(prototype_2)|e('html_attr') }}"
+             data-prototype-3="{{ form_widget(prototype_3)|e('html_attr') }}">
+            <ol class="kmmi-menu-list list-unstyled">
+                {% for item in form %}{{ form_widget(item) }}{% endfor %}
+            </ol>
+            <button type="button" class="btn btn-success kmmi-menu-add"><i class="fa fa-plus"></i> Új elem</button>
+        </div>
+    {% else %}
+        <ol class="kmmi-menu-list list-unstyled">
+            {% for item in form %}{{ form_widget(item) }}{% endfor %}
+        </ol>
+    {% endif %}
+{% endblock %}
+
+{% block kmmi_menu_item_widget %}
+    <li class="kmmi-menu-item" data-level="{{ level }}">
+        <div class="kmmi-menu-row">
+            <span class="kmmi-menu-handle" title="Húzd át a sorrend vagy a szint módosításához"><i class="fa fa-grip-vertical"></i></span>
+            <div class="kmmi-menu-fields">
+                {{ form_widget(form.title) }}
+                {{ form_widget(form.url) }}
+            </div>
+            <button type="button" class="btn btn-outline-secondary btn-sm kmmi-menu-add-child" title="Új alelem"><i class="fa fa-plus"></i></button>
+            <button type="button" class="btn btn-outline-danger btn-sm kmmi-menu-remove" title="Törlés"><i class="fa fa-trash"></i></button>
+        </div>
+        {{ form_errors(form.title) }}
+        {{ form_errors(form.url) }}
+        {{ form_errors(form) }}
+        {% if form['children'] is defined %}{{ form_widget(form['children']) }}{% endif %}
+    </li>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ doc.defaultTitle|plain_text }} - {{ parent() }}{% endblock %}
+{% block ogTitle %}{{ doc.defaultTitle|plain_text }} - {{ uniqueContent('page-title') }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ include('frontend/shared/breadcrumb.html.twig', {
+        crumbs: [{label: 'Kezdőlap', url: path('app_homepage')}, {label: doc.defaultTitle}],
+        title: true
+    }) }}
+{% endblock %}
+
+{% block body %}
+    <div class="body-content list">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 content-col">
+                <div class="content article-title">
+                    <h1>{{ doc.defaultTitle|raw }}</h1>
+                </div>
+            </div>
+            <div class="col-md-8 col-sm-12 content-col">
+                <div class="content">
+                    {{ include('frontend/shared/share.html.twig', {title: doc.defaultTitle}) }}
+
+                    <div class="article-content">
+                        {{ doc.lead|raw }}
+                    </div>
+
+                    <div class="article-content">
+                        {{ doc.text|raw }}
+                    </div>
+
+                    {{ include('frontend/media/attachment.html.twig', {entity: doc}) }}
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12 content-col">
+                {% if doc.id <= constant('App\\Entity\\Doc\\Doc::LAST_ABOUT_ID') %}
+                    <twig:RelatedDocs activeId="{{ doc.id }}" />
+                {% else %}
+                    <twig:SidebarNews size="4" columns="1" />
+                {% endif %}
+                <twig:SidebarGalleries size="2" />
+            </div>
+        </div>
+    </div>
+{% endblock %}

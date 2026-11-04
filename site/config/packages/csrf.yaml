@@ -1,0 +1,10 @@
+# Stateless CSRF protection for forms. The login and logout tokens are regular (session) tokens,
+# because the AJAX login page reads them from the rendered HTML.
+framework:
+    form:
+        csrf_protection:
+            token_id: submit
+
+    csrf_protection:
+        stateless_token_ids:
+            - submit

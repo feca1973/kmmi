@@ -9,10 +9,6 @@
 /vendor/
 ###< symfony/framework-bundle ###
 
-###> lexik/jwt-authentication-bundle ###
-/config/jwt/*.pem
-###< lexik/jwt-authentication-bundle ###
-
 ###> phpstan/phpstan ###
 phpstan.neon
 ###< phpstan/phpstan ###
@@ -26,3 +22,22 @@ phpstan.neon
 /.phpcs-cache
 /phpcs.xml
 ###< squizlabs/php_codesniffer ###
+
+###> symfony/asset-mapper ###
+/public/assets/
+/assets/vendor/
+###< symfony/asset-mapper ###
+
+###> uploads ###
+# Uploaded files (file manager) live on the server, not in the repository.
+/public/uploads/
+###< uploads ###
+
+###> symfonycasts/sass-bundle ###
+/public/assets/
+###< symfonycasts/sass-bundle ###
+
+###> liip/imagine-bundle ###
+# The generated (sized, .webp) images of the public pages.
+/public/media/
+###< liip/imagine-bundle ###

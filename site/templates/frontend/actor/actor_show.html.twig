@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ actor.defaultTitle|plain_text }} | {{ type.name|plain_text }} | arcképcsarnok | adattár | {{ parent() }}{% endblock %}
+{% block ogTitle %}{{ actor.defaultTitle|plain_text }} | {{ type.name|plain_text }} | arcképcsarnok | adattár{% endblock %}
+{% block ogDescription %}{{ actor.lead|plain_text }}{% endblock %}
+{% block ogImage %}{{ (actor.mainImage ?: uniqueContent('logo'))|uploaded_image('og_image') }}{% endblock %}
+{% block metaDescription %}{{ actor.lead|plain_text }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ include('frontend/shared/breadcrumb.html.twig', {
+        crumbs: [
+            {label: 'Kezdőlap', url: path('app_homepage')},
+            {label: 'Adattár'},
+            {label: 'Arcképcsarnok'},
+            {label: type.name, url: path('actor_list', {slug: type.slug})},
+            {label: actor.defaultTitle}
+        ]
+    }) }}
+{% endblock %}
+
+{% block body %}
+    <div class="body-content list">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 content-col">
+                <div class="content article-title">
+                    <h1>{{ actor.defaultTitle|raw }}</h1>
+                    {% if actor.city is not null %}
+                        <p class="article-update-date">Kapcsolódó település: <a href="{{ path('cities_single', {'region': actor.city.regions.slug, 'slug': actor.city.slug}) }}">{{ actor.city.defaultTitle }}</a></p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md-8 col-sm-12 content-col">
+                <div class="content">
+                    {{ include('frontend/shared/share.html.twig', {title: actor.defaultTitle}) }}
+
+                    <div class="article-content">
+                        {{ actor.lead|raw }}
+                    </div>
+
+                    <div class="article-content">
+                        {{ actor.content|raw }}
+                    </div>
+
+                    {{ include('frontend/media/photos.html.twig', {gallery: actor.gallery}) }}
+
+                    {{ include('frontend/media/attachment.html.twig', {entity: actor}) }}
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12 content-col">
+                <twig:SidebarEvents size="6" />
+            </div>
+        </div>
+    </div>
+{% endblock %}

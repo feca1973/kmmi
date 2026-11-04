@@ -1,0 +1,39 @@
+<ul class="feature-menu navbar-nav dropdown">
+    {% for item in this.items %}
+        {# The item "Adattár" (its URL is "#") opens the mega menu of the data pages. #}
+        {% if item.url == '#' %}
+            <li class="nav-item">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{ item.title }}
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    {% for column in this.dataMenu %}
+                        <div class="dropdown-menu-col">
+                            <p class="dropdown-menu-title"><i class="fa {{ column.icon }}"></i>{{ column.title }}</p>
+                            <ul>
+                                {% for link in column.links %}
+                                    <li>
+                                        {% if link.links is defined %}
+                                            <p class="dropdown-menu-subtitle">{{ link.label }}</p>
+                                            <ul>
+                                                {% for sublink in link.links %}
+                                                    <li><a class="dropdown-item" href="{{ sublink.url }}">{{ sublink.label }}</a></li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% else %}
+                                            <a href="{{ link.url }}" class="dropdown-menu-right-link dropdown-item">{{ link.label }}</a>
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endfor %}
+                </div>
+            </li>
+        {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ item.url }}">{{ item.title }}</a>
+            </li>
+        {% endif %}
+    {% endfor %}
+</ul>

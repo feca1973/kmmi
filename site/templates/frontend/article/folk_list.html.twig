@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% set articleType = appointments[0].articleType %}
+
+{% block title %}{{ articleType.defaultName|plain_text }} - {{ parent() }}{% endblock %}
+{% block ogTitle %}{{ articleType.defaultName|plain_text }} - {{ uniqueContent('page-title') }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ include('frontend/shared/breadcrumb.html.twig', {
+        crumbs: [{label: 'Kezdőlap', url: path('app_homepage')}, {label: 'Adattár'}, {label: articleType.defaultName}],
+        heading: true
+    }) }}
+{% endblock %}
+
+{% block body %}
+    <div class="body-content list">
+        <div class="row">
+            <div class="col-md-8 col-sm-12 content-col">
+                <div class="content">
+                    <ul class="list-unstyled">
+                        {% for article in appointments %}
+                            <li>
+                                <h2><a href="{{ path('folk_show', {'slug': article.slug}) }}">{{ article.title|raw }}</a></h2>
+                                {{ article.lead|raw }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    <div class="navigation">
+                        {{ knp_pagination_render(appointments) }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12 content-col">
+                <twig:SidebarEvents size="5" />
+            </div>
+        </div>
+    </div>
+{% endblock %}

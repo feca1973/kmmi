@@ -1,0 +1,6 @@
+{% if block %}
+    <div class="single-page-block-title">{{ title }}</div>
+    <div class="article-content">
+        {{ block|raw }}
+    </div>
+{% endif %}

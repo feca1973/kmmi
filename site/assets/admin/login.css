@@ -1,0 +1,178 @@
+/* Admin login page; ported from the legacy admin-login styles (same colors and layout). */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 200;
+}
+
+#admin-login {
+    height: 100%;
+}
+
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.login {
+    position: relative;
+    top: 45%;
+    width: 500px;
+    max-width: 100%;
+    display: table;
+    margin: -150px auto 0 auto;
+    background: #fff;
+    border-radius: 4px;
+}
+
+.legend {
+    position: relative;
+    width: 100%;
+    display: block;
+    background: #12b4ff;
+    padding: 20px 26px;
+    color: #fff;
+    font-size: 27px;
+}
+
+.input {
+    position: relative;
+    width: 90%;
+    margin: 20px auto;
+}
+
+.input span {
+    position: absolute;
+    display: block;
+    color: #e3e3e3;
+    left: 10px;
+    top: 8px;
+    font-size: 26px;
+    transition: opacity 200ms ease-in-out;
+}
+
+.input span.hide {
+    opacity: 0;
+}
+
+.input input {
+    width: 100%;
+    padding: 13px 7px 13px 42px;
+    display: block;
+    font-size: 22px;
+    border: 1px solid #e3e3e3;
+    border-radius: 4px;
+    transition: 0.2s ease-out;
+    color: #a1a1a1;
+}
+
+.input input:focus {
+    padding: 10px 5px 10px 10px;
+    outline: 0;
+    border-color: #0093d7;
+}
+
+.input input[type='checkbox'] {
+    width: auto;
+    display: inline-block;
+    margin-left: 10px;
+    margin-right: 16px;
+}
+
+.submit {
+    width: 60px;
+    height: 60px;
+    display: block;
+    margin: 0 auto -20px auto;
+    background: #fff;
+    border-radius: 100%;
+    border: 1px solid #12b4ff;
+    color: #12b4ff;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 0 0 7px #fff;
+    transition: all 400ms ease-in-out;
+    outline: none;
+}
+
+.submit:hover,
+.submit:focus {
+    background: #12b4ff;
+    color: #fff;
+    outline: 0;
+}
+
+.submit.error {
+    background: #db3b21;
+    border-color: #c0341d;
+    color: #fff;
+}
+
+.input span svg,
+.submit svg {
+    width: 1em;
+    height: 1em;
+    display: block;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.submit svg {
+    margin: 0 auto 0 12px;
+}
+
+.submit svg.filled {
+    fill: currentColor;
+    stroke: none;
+    margin-left: 19px;
+}
+
+.feedback {
+    position: absolute;
+    bottom: -93px;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    background: #db3b21;
+    padding: 10px 0;
+    font-size: 16px;
+    opacity: 0;
+    transition: opacity 400ms ease-in-out, bottom 400ms ease-in-out;
+}
+
+.feedback::before {
+    bottom: 100%;
+    left: 50%;
+    border: solid transparent;
+    content: '';
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-bottom-color: #db3b21;
+    border-width: 10px;
+    margin-left: -10px;
+}
+
+.feedback.show {
+    opacity: 1;
+    display: block;
+    bottom: -100px;
+}
+
+label {
+    font-size: 20px;
+}

@@ -1,0 +1,175 @@
+@use 'colors' as *;
+@use 'fonts' as *;
+
+body {
+  margin: 0;
+  min-height: 100%;
+  background-color: $white_color;
+  font-family: $page_font_family;
+  font-size: $page_font_size;
+  line-height: 20px;
+  color: $page_font_color;
+  padding-bottom: 25px;
+}
+
+a,
+a:hover {
+  color: $page_font_color;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: $headig_text;
+}
+
+/* Bootstrap 4 drew a rule (<hr>) as a light line; Bootstrap 5 makes it darker and half transparent. */
+hr {
+  border-top-color: rgba(0, 0, 0, 0.1);
+  opacity: 1;
+}
+
+.breadcrumb {
+  margin-top: 100px;
+  font-size: 100%;
+}
+
+/* Bootstrap 4 drew the divider inline; its whitespace is part of the look. */
+.breadcrumb-item + .breadcrumb-item::before {
+  display: inline-block;
+  float: none;
+}
+
+/* On the list pages the legacy breadcrumb was the H1 of the page, with the font of the headings. */
+.breadcrumb-title {
+  font-family: $headig_text;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.breadcrumb-title h1 {
+  display: inline;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+}
+
+.lnr {
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* INDEX AND LIST PAGES */
+.body-content.index .content-col .content,
+.body-content.list .content-col .content {
+  padding: 15px;
+  border: 1px solid $menu_gray_color;
+  border-radius: 15px;
+}
+
+.body-content.list .content-col .content {
+  margin-bottom: 15px;
+}
+
+.body-content.index .content-col h2,
+.body-content.list .content-col h2,
+.body-content.list .content-col h2 a {
+  color: $white_color;
+}
+
+.body-content.index .content-col h2,
+.body-content.list .content-col h2 {
+  font-size: 1.3rem;
+  background-color: $sitebar_title_bg;
+  margin: -15px -15px 15px -15px;
+  padding: 5px 5px 5px 30px;
+  border: 1px solid transparent;
+  border-radius: 12px 12px 0 0;
+  font-family: $headig_text;
+}
+
+.body-content.index .content-col h2 i,
+.body-content.list .content-col h2 i {
+  font-size: 1.2rem;
+  padding-right: 5px;
+}
+
+.body-content.index .content-col h3,
+.body-content.list .content-col h3 {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.body-content.index .content-col ul,
+.body-content.list .content-col ul {
+  list-style-type: none;
+  padding: 0 15px 0 15px;
+  margin: 0;
+}
+
+.body-content.index .content-col ul li,
+.body-content.list .content-col ul li {
+  padding: 5px 0;
+}
+
+.body-content.index .content-col .content-col-info,
+.body-content.list .content-col .content-col-info {
+  padding: 3px 0;
+}
+
+.body-content.index .content-col .content-col-info img,
+.body-content.list .content-col .content-col-info img {
+  width: 100%;
+}
+
+.body-content.list .content-col .related ul li a.active {
+  color: $sitebar_title_bg;
+}
+
+/* SHARE BUTTONS */
+.fb-like {
+  float: left;
+  top: 12px;
+  left: 15px;
+}
+
+.social-share {
+  float: right;
+}
+
+.social-share ul {
+  margin-left: 10px;
+  float: left;
+}
+
+.social-share li {
+  text-transform: uppercase;
+  font-size: 13px;
+  float: left;
+  list-style-type: none;
+  margin: 0;
+}
+
+.social-icon-box {
+  display: flex;
+  width: 42px;
+  height: 42px;
+  margin-right: 6px;
+  margin-left: 6px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  transition: all 200ms ease;
+  background: $menu_gray_color;
+  color: #fff;
+  border: 1px solid $header_bg_end;
+}
+
+.footer {
+  margin-top: 25px;
+}

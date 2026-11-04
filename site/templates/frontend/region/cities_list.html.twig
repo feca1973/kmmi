@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Kárpátaljai települések - {{ parent() }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ include('frontend/shared/breadcrumb.html.twig', {
+        crumbs: [{label: 'Kezdőlap', url: path('app_homepage')}, {label: 'Adattár'}, {label: 'Települések'}],
+        heading: true
+    }) }}
+{% endblock %}
+
+{% block body %}
+    <div class="body-content list">
+        <div class="row">
+            <div class="col-md-8 col-sm-12 content-col">
+                <div class="content">
+                    <ul class="list-unstyled">
+                        {% for city in appointments %}
+                            <li>
+                                <h2><a href="{{ path('cities_single', {'region': city.regions.slug, 'slug': city.slug}) }}">{{ city.title }} ({{ city.regions.defaultTitle }})</a></h2>
+                                {% if city.image %}
+                                    {{ include('frontend/shared/list_image.html.twig', {image: city.image, alt: city.defaultTitle}) }}
+                                {% endif %}
+                                {{ city.lead|raw }}
+                                <div class="clear"></div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    <div class="navigation">
+                        {{ knp_pagination_render(appointments) }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12 content-col">
+                <twig:SidebarNews size="4" columns="1" />
+                <twig:SidebarEvents size="6" />
+                <twig:SidebarGalleries size="3" />
+            </div>
+        </div>
+    </div>
+{% endblock %}

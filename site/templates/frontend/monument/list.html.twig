@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Emlékhelyek - {{ parent() }}{% endblock %}
+{% block ogTitle %}Emlékhelyek - {{ uniqueContent('page-title') }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ include('frontend/shared/breadcrumb.html.twig', {
+        crumbs: [{label: 'Kezdőlap', url: path('app_homepage')}, {label: 'Adattár'}, {label: 'Emlékhelyek'}],
+        heading: true
+    }) }}
+{% endblock %}
+
+{% block body %}
+    {% set leadLength = 500 %}
+    <div class="body-content list">
+        <div class="row">
+            <div class="col-md-8 col-sm-12 content-col">
+                <div class="content">
+                    <ul class="list-unstyled">
+                        {% for monument in appointments %}
+                            {% set description = monument.longDescription|plain_text %}
+                            <li>
+                                <h2><a href="{{ path('monument_show', {'type': monument.type.slug, 'slug': monument.slug}) }}">{{ monument.name|raw }}</a></h2>
+                                <p class="article-update-date">Típus: {{ monument.type }} | Település: {{ monument.placeCity }}</p>
+                                {% if monument.image %}
+                                    {{ include('frontend/shared/list_image.html.twig', {image: monument.image, alt: monument.name}) }}
+                                {% endif %}
+                                {{ description|slice(0, leadLength) }}{% if description|length > leadLength %}...{% endif %}
+                                <div class="clear"></div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    <div class="navigation">
+                        {{ knp_pagination_render(appointments) }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12 content-col">
+                <twig:SidebarNews size="6" columns="1" />
+                <twig:SidebarEvents size="6" />
+            </div>
+        </div>
+    </div>
+{% endblock %}

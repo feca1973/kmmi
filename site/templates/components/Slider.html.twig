@@ -1,0 +1,29 @@
+{% set sliders = this.sliders %}
+<div id="home" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        {% for slider in sliders %}
+            <button type="button" data-bs-target="#home" data-bs-slide-to="{{ loop.index0 }}"{% if loop.first %} class="active" aria-current="true"{% endif %} aria-label="{{ slider.title|plain_text }}"></button>
+        {% endfor %}
+    </div>
+    <div class="carousel-inner">
+        {% for slider in sliders %}
+            <div class="carousel-item{% if loop.first %} active{% endif %}">
+                {% if slider.url %}<a href="{{ slider.url }}">{% endif %}
+                    <img src="{{ slider.image|uploaded_image('slider') }}" alt="{{ slider.title|plain_text }}" width="1920" height="600"{% if not loop.first %} loading="lazy"{% endif %}>
+                {% if slider.url %}</a>{% endif %}
+                <div class="carousel-caption">
+                    {% if slider.title %}<p class="carousel-caption-title">{{ slider.title|raw }}</p>{% endif %}
+                    {% if slider.subtitle %}<p>{{ slider.subtitle }}</p>{% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#home" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Előző</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#home" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Következő</span>
+    </button>
+</div>

@@ -1,0 +1,11 @@
+{% set lead = article.lead|plain_text %}
+<li>
+    <h3><a href="{{ path('news_single', {'type': article.articleType.slug, 'slug': article.slug}) }}">{{ article.title|raw }}</a></h3>
+    <p>
+        {% if withImage|default(false) and article.mainImage is not null %}
+            {{ include('frontend/shared/list_image.html.twig', {image: article.mainImage, alt: article.title, sizes: '(max-width: 768px) 100vw, 127px'}) }}
+        {% endif %}
+        {{ lead|slice(0, leadLength) }}{% if lead|length > leadLength %}...{% endif %}
+    </p>
+    <div class="clear"></div>
+</li>

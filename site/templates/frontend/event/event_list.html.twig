@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rendezvények{% if type %} | {{ type.name }}{% endif %} - {{ parent() }}{% endblock %}
+{% block ogTitle %}Rendezvények{% if type %} | {{ type.name }}{% endif %} - {{ uniqueContent('page-title') }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ include('frontend/shared/breadcrumb.html.twig', {
+        crumbs: type
+            ? [{label: 'Kezdőlap', url: path('app_homepage')}, {label: 'Rendezvények', url: path('event_list')}, {label: type.name}]
+            : [{label: 'Kezdőlap', url: path('app_homepage')}, {label: 'Rendezvények'}],
+        heading: true
+    }) }}
+{% endblock %}
+
+{% block body %}
+    <div class="body-content list">
+        <div class="row">
+            <div class="col-md-8 col-sm-12 content-col">
+                <div class="content">
+                    <ul class="list-unstyled">
+                        {% for event in appointments %}
+                            <li>
+                                <h2><a href="{{ path('event_single', {'type': event.type.slug, 'slug': event.slug}) }}">{{ event.title|raw }}</a></h2>
+                                <p class="article-update-date">{{ eventDate(event.dateFrom, event.dateTo) }}</p>
+                                {{ event.lead|raw }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    <div class="navigation">
+                        {{ knp_pagination_render(appointments) }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12 content-col">
+                <twig:EventTypes />
+                <twig:SidebarNews size="6" columns="1" />
+                <twig:SidebarGalleries size="3" />
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends 'base.html.twig' %}
+
+{% set type = monument.type %}
+
+{% block title %}{{ monument.name|plain_text }} | {{ type.name|plain_text }} | {{ parent() }}{% endblock %}
+{% block ogTitle %}{{ monument.name|plain_text }} | {{ type.name|plain_text }}{% endblock %}
+{% block ogDescription %}{{ monument.longDescription|plain_text|slice(0, 255) }}{% endblock %}
+{% block ogImage %}{{ (monument.image ?: uniqueContent('logo'))|uploaded_image('og_image') }}{% endblock %}
+{% block metaDescription %}{{ monument.longDescription|plain_text|slice(0, 255) }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ include('frontend/shared/breadcrumb.html.twig', {
+        crumbs: [
+            {label: 'Kezdőlap', url: path('app_homepage')},
+            {label: 'Adattár'},
+            {label: 'Emlékhelyek', url: path('monuments_list')},
+            {label: monument.name}
+        ]
+    }) }}
+{% endblock %}
+
+{% block body %}
+    {% set gallery = monument.gallery %}
+    <div class="body-content list">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 content-col">
+                <div class="content monument-title">
+                    <h1>{{ monument.name|raw }}</h1>
+                    <p class="article-update-date">Típus: {{ monument.type }} | Település: {{ monument.placeCity }} | Készítette: {{ monument.creatorName }}</p>
+                </div>
+            </div>
+            <div class="col-md-8 col-sm-12 content-col">
+                <div class="content">
+                    {{ include('frontend/shared/share.html.twig', {title: monument.name}) }}
+
+                    <div class="article-content">
+                        {% if monument.image %}
+                            <img src="{{ monument.image|uploaded_image('content800') }}" srcset="{{ monument.image|uploaded_srcset('article') }}" sizes="(max-width: 768px) 100vw, 700px" alt="{{ monument.name|plain_text }}">
+                        {% endif %}
+                    </div>
+
+                    <div class="single-page-block-title">Név, típus</div>
+                    <div class="article-content">
+                        <ul class="list-unstyled">
+                            <li><strong>Az emlékhely pontos neve</strong>: {{ monument.name }}</li>
+                            <li><strong>Az emlékhely típusa</strong>: {{ monument.type }}</li>
+                            <li><strong>Létező vagy eltűnt emlék(hely)</strong>: {{ monument.existing }}</li>
+                            <li><strong>Az emlékhely besorolása</strong>: {{ monument.localization }}</li>
+                        </ul>
+                    </div>
+
+                    <div class="single-page-block-title">Helyszín</div>
+                    <div class="article-content">
+                        <ul class="list-unstyled">
+                            <li><strong>A település neve magyarul</strong>: {{ monument.placeCity }}</li>
+                            <li><strong>Pontos helyszín, cím</strong>: {{ monument.placeAddress }}</li>
+                            <li><strong>GPS szélességi fok</strong>: {{ monument.lat }}</li>
+                            <li><strong>GPS hosszúsági fok</strong>: {{ monument.lng }}</li>
+                        </ul>
+                    </div>
+
+                    <div class="single-page-block-title">Információk</div>
+                    <div class="article-content">
+                        <ul class="list-unstyled">
+                            {% if monument.createdDate %}
+                                <li><strong>Készítés időpontja</strong>: {{ normalizedDate(monument.createdDate) }}</li>
+                            {% endif %}
+                            <li><strong>Készíttető neve</strong>: {{ monument.submitter }}</li>
+                            <li><strong>Készítő neve</strong>: {{ monument.creatorName }}</li>
+                            {% if monument.submitterPurpose %}
+                                <li><strong>Készítés céljának ismert oka</strong>: {{ monument.submitterPurpose }}</li>
+                            {% endif %}
+                            {% if monument.monumentCaption %}
+                                <li><strong>Felirata</strong>: {{ monument.monumentCaption|raw }}</li>
+                            {% endif %}
+                            {% if monument.usageDate %}
+                                <li><strong>Mettől meddig volt használatban</strong>: {{ monument.usageDate }}</li>
+                            {% endif %}
+                            {% if monument.caringBy %}
+                                <li><strong>Gondozását felügyeli</strong>: {{ monument.caringBy }}</li>
+                            {% endif %}
+                            <li><strong>Állapota</strong>: {{ monument.momumentCondition }}</li>
+                            {% if monument.relatedEvents %}
+                                <li><strong>Kapcsolódó rendezvények, ünnepségek</strong>: {{ monument.relatedEvents }}</li>
+                            {% endif %}
+                            <li><strong>Rövid ismertető</strong>: {{ monument.longDescription|raw }}</li>
+                            {% if monument.sourceInfo %}
+                                <li><strong>Forrásinformációk</strong>: {{ monument.sourceInfo|raw }}</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+
+                    {{ include('frontend/media/photos.html.twig', {gallery: gallery, photoBy: monument.photoBy}) }}
+
+                    {% if monument.compiledBy %}
+                        <div class="single-page-block-title">Összeállította</div>
+                        <div class="article-content">
+                            <ul class="list-unstyled">
+                                <li><strong>Összeállította</strong>: {{ monument.compiledBy }}</li>
+                            </ul>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12 content-col">
+                <twig:SidebarNews size="4" columns="1" />
+                <twig:SidebarEvents size="6" />
+                <twig:SidebarGalleries size="3" />
+            </div>
+        </div>
+    </div>
+{% endblock %}

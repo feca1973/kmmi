@@ -1,0 +1,391 @@
+/* Admin theme: the look of the legacy admin (EasyAdmin 1 / AdminLTE): brand blue #12b4ff, blue sidebar #0093d7,
+   green buttons #1aaa55, red #db3b21, gray page #eaebec with a white panel, Helvetica 14px. It is the same in the light
+   and in the dark scheme of EasyAdmin 5 (the legacy had only one). */
+:root,
+.ea-dark-scheme {
+    --ea-primary: #12b4ff;
+    --ea-primary-foreground: #fff;
+}
+
+body.ea {
+    --font-family-sans-serif: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --font-family-base: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --font-size-base: 14px;
+    --text-color: #333;
+    --text-muted: #777;
+    --body-bg: #eaebec;
+    --body-max-width: none;
+    --content-bg: #fff;
+    --content-top-border-color: #e5e5e5;
+    --sidebar-bg: #0093d7;
+    --sidebar-border-color: transparent;
+    --sidebar-logo-color: #fff;
+    --sidebar-padding-left: 0;
+    --sidebar-padding-right: 0;
+    --sidebar-menu-items-padding-left: 15px;
+    --sidebar-menu-color: #fff;
+    --sidebar-menu-icon-color: #fff;
+    --sidebar-menu-hover-color: #fff;
+    --sidebar-menu-active-item-bg: #006fa2;
+    --sidebar-menu-active-item-color: #fff;
+    --sidebar-item-hover-bg: #006493;
+    --table-thead-color: #333;
+    --table-cell-color: #333;
+    --table-cell-border-color: #ddd;
+    --table-hover-cell-bg: #f5f5f5;
+    --table-thead-sorted-color: #12b4ff;
+    --table-thead-sorted-marker-color: #12b4ff;
+    --form-input-text-color: #555;
+    --form-control-bg: #fff;
+    --form-input-border-color: #ccc;
+    --form-label-color: #333;
+    color: #333;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    background: #eaebec;
+}
+
+/* The sidebar: a blue logo bar of 50px, then the menu with items of 44px. */
+body.ea .ea-sidebar {
+    background: #0093d7;
+}
+
+body.ea .ea-sidebar-header {
+    background: #12b4ff;
+    block-size: 50px;
+}
+
+body.ea .ea-sidebar-logo a {
+    padding: 0;
+    font-size: 21px;
+    font-weight: 400;
+    line-height: 50px;
+    color: #fff;
+}
+
+body.ea .ea-sidebar-item {
+    border-radius: 0;
+    padding-inline-end: 0;
+}
+
+body.ea .ea-sidebar-item-link {
+    align-items: center;
+    padding: 12px 5px 12px 0;
+    line-height: 20px;
+    color: #fff;
+}
+
+body.ea .ea-sidebar-item.is-active > .ea-sidebar-item-link .ea-sidebar-item-label {
+    font-weight: 400;
+}
+
+body.ea .ea-sidebar-item-icon {
+    color: #fff;
+}
+
+/* The top bar and the page: white bar of 50px, gray page, white panel with a 20px margin. */
+body.ea .content-top {
+    block-size: 50px;
+    background: #fff;
+    box-shadow: none;
+    border-bottom: 1px solid #e5e5e5;
+    color: #484848;
+}
+
+body.ea .content-wrapper {
+    background: #eaebec;
+    padding: 20px;
+}
+
+body.ea .content-top {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* The search of the top bar: the icon is inside the field. */
+body.ea .content-search .form-widget {
+    position: relative;
+}
+
+body.ea .content-search input {
+    margin: 0;
+    padding-left: 34px;
+}
+
+body.ea .content-search .content-search-icon {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    z-index: 2;
+    pointer-events: none;
+}
+
+body.ea table.datagrid thead th a {
+    padding: 0;
+    line-height: 20px;
+}
+
+body.ea .content-wrapper > article.content {
+    background: #fff;
+    padding: 15px;
+}
+
+body.ea .content-header {
+    padding: 0 0 15px;
+    background: #fff;
+    align-items: center;
+}
+
+body.ea .datagrid thead th,
+body.ea .datagrid thead .sorted {
+    box-shadow: none;
+}
+
+body.ea .content-header-title .title {
+    font-size: 20px;
+    font-weight: 500;
+    color: #000;
+}
+
+/* The list: plain rows, bold head, 8px cell padding. */
+body.ea table.datagrid th,
+body.ea table.datagrid td {
+    padding: 8px;
+    font-size: 14px;
+    line-height: 20px;
+    color: #333;
+    border-color: #ddd;
+}
+
+body.ea table.datagrid th {
+    background: #fff;
+    font-weight: 700;
+    border-bottom: 1px solid #ddd;
+}
+
+body.ea table.datagrid th.sorted a,
+body.ea table.datagrid th.sorted i {
+    color: #12b4ff;
+}
+
+body.ea table.datagrid td {
+    background: #fff;
+}
+
+body.ea table.datagrid tbody tr:hover td {
+    background: #f5f5f5;
+}
+
+/* The actions of a row are plain bold links, as in the legacy list: "Szerkesztés" blue, "Törlés" red. */
+body.ea table.datagrid td.actions .btn {
+    min-height: 0;
+    height: auto;
+    line-height: 20px;
+    padding: 0 10px 0 0;
+    border: 0;
+    background: none;
+    box-shadow: none;
+    font-weight: 700;
+    color: #12b4ff;
+}
+
+body.ea table.datagrid td.actions .btn .icon {
+    display: none;
+}
+
+body.ea table.datagrid td.actions .btn.action-delete {
+    color: #db3b21;
+}
+
+/* Buttons and fields. */
+body.ea a {
+    transition: background-color 100ms linear, color 100ms linear;
+}
+
+body.ea .btn {
+    border-radius: 3px;
+    font-size: 14px;
+    transition: background-color 100ms linear, border-color 100ms linear, color 100ms linear, box-shadow 100ms linear;
+}
+
+body.ea .btn-primary,
+body.ea .btn-success {
+    background: #1aaa55;
+    border-color: #168f48;
+    color: #fff;
+    font-weight: 700;
+}
+
+body.ea .btn-primary:hover,
+body.ea .btn-primary:focus,
+body.ea .btn-success:hover,
+body.ea .btn-success:focus {
+    background: #168f48;
+    border-color: #12753a;
+    color: #fff;
+}
+
+body.ea .btn-danger:not(.btn-invisible) {
+    background: #db3b21;
+    border-color: #c0341d;
+    color: #fff;
+}
+
+body.ea .form-control,
+body.ea .form-select {
+    min-height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+body.ea .form-control:focus,
+body.ea .form-select:focus {
+    border-color: #12b4ff;
+    outline: 0;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+/* The menu editor (assets/admin/menu-tree.js): a tree of up to three levels, sorted by dragging. */
+.kmmi-menu-list {
+    margin: 0;
+    padding: 0;
+    min-height: 0.25rem;
+}
+
+.kmmi-menu-list .kmmi-menu-list {
+    margin-left: 2rem;
+}
+
+.kmmi-menu-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.5rem;
+    margin-bottom: 0.4rem;
+    border: 1px solid var(--bs-border-color, #dee2e6);
+    border-radius: 0.375rem;
+    background: var(--bs-body-bg, #fff);
+}
+
+.kmmi-menu-fields {
+    display: flex;
+    flex: 1;
+    gap: 0.5rem;
+}
+
+.kmmi-menu-fields > :first-child {
+    flex: 1;
+}
+
+.kmmi-menu-fields > :last-child {
+    flex: 2;
+}
+
+.kmmi-menu-handle {
+    cursor: grab;
+    color: var(--bs-secondary-color, #6c757d);
+}
+
+.kmmi-menu-item[data-level="3"] > .kmmi-menu-row .kmmi-menu-add-child {
+    display: none;
+}
+
+/* While an item is dragged, the empty lists under the items are the places it can be dropped into. */
+.kmmi-menu-dragging .kmmi-menu-list:empty {
+    min-height: 1.75rem;
+    margin-bottom: 0.4rem;
+    border: 1px dashed var(--bs-border-color, #dee2e6);
+    border-radius: 0.375rem;
+}
+
+.kmmi-menu-item.sortable-ghost {
+    opacity: 0.4;
+}
+
+/* The size and the text wrap of the images in the editor (assets/admin/ckeditor.js; the frontend has the same in
+   _global.scss). In the editor a block image is a figure.image and an inline image a span.image-inline: the class of the
+   style is on that element. The selectors are as specific as they are because the CSS of CKEditor (loaded later) has
+   `.ck-content .image { margin: auto }`. */
+.ck-content .image[class*="image-size-"] img,
+.ck-content .image[class*="image-left-"] img,
+.ck-content .image[class*="image-right-"] img,
+.ck-content .image-inline[class*="image-size-"] img,
+.ck-content .image-inline[class*="image-left-"] img,
+.ck-content .image-inline[class*="image-right-"] img {
+    width: 100%;
+    height: auto;
+}
+
+.ck-content .image.image-size-25,
+.ck-content .image-inline.image-size-25 {
+    width: 25%;
+}
+
+.ck-content .image.image-size-50,
+.ck-content .image-inline.image-size-50 {
+    width: 50%;
+}
+
+.ck-content .image.image-size-75,
+.ck-content .image-inline.image-size-75 {
+    width: 75%;
+}
+
+.ck-content .image.image-size-100,
+.ck-content .image-inline.image-size-100 {
+    width: 100%;
+}
+
+.ck-content .image.image-left-25,
+.ck-content .image-inline.image-left-25 {
+    float: left;
+    clear: none;
+    width: 25%;
+    margin: 0 1.5rem 1rem 0;
+}
+
+.ck-content .image.image-left-50,
+.ck-content .image-inline.image-left-50 {
+    float: left;
+    clear: none;
+    width: 50%;
+    margin: 0 1.5rem 1rem 0;
+}
+
+.ck-content .image.image-left-75,
+.ck-content .image-inline.image-left-75 {
+    float: left;
+    clear: none;
+    width: 75%;
+    margin: 0 1.5rem 1rem 0;
+}
+
+.ck-content .image.image-right-25,
+.ck-content .image-inline.image-right-25 {
+    float: right;
+    clear: none;
+    width: 25%;
+    margin: 0 0 1rem 1.5rem;
+}
+
+.ck-content .image.image-right-50,
+.ck-content .image-inline.image-right-50 {
+    float: right;
+    clear: none;
+    width: 50%;
+    margin: 0 0 1rem 1.5rem;
+}
+
+.ck-content .image.image-right-75,
+.ck-content .image-inline.image-right-75 {
+    float: right;
+    clear: none;
+    width: 75%;
+    margin: 0 0 1rem 1.5rem;
+}

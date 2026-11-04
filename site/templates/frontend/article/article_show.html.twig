@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% set articleHeader = article.articleType %}
+
+{% block title %}{{ article.defaultTitle|plain_text }} | {{ articleHeader.defaultName|plain_text }} | {{ parent() }}{% endblock %}
+{% block ogTitle %}{{ article.defaultTitle|plain_text }} | {{ articleHeader.defaultName|plain_text }}{% endblock %}
+{% block ogDescription %}{{ article.lead|plain_text }}{% endblock %}
+{% block ogImage %}{{ (article.mainImage ?: uniqueContent('logo'))|uploaded_image('og_image') }}{% endblock %}
+{% block metaDescription %}{{ article.lead|plain_text }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ include('frontend/shared/breadcrumb.html.twig', {
+        crumbs: [{label: 'Kezdőlap', url: path('app_homepage')}]
+            |merge(articleHeader.id != 6 ? [{label: 'Adattár'}] : [])
+            |merge([
+                {label: articleHeader.defaultName, url: path('news_list', {slug: articleHeader.slug})},
+                {label: article.defaultTitle}
+            ])
+    }) }}
+{% endblock %}
+
+{% block body %}
+    <div class="body-content list">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 content-col">
+                <div class="content article-title">
+                    <h1>{{ article.defaultTitle|raw }}</h1>
+                    {% if city %}
+                        {% set region = article.city.regions %}
+                        <p class="article-update-date">Járás: {{ region.defaultTitle }} | Település: <a href="{{ path('cities_single', {'region': region.slug, 'slug': article.city.slug}) }}">{{ article.city.defaultTitle }}</a></p>
+                    {% else %}
+                        <p class="article-update-date">Írta: {{ article.authorName }} | Forrás: {{ article.authorSource }} | {{ normalizedDate(article.pubDate) }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md-8 col-sm-12 content-col">
+                <div class="content">
+                    {{ include('frontend/shared/share.html.twig', {title: article.defaultTitle}) }}
+
+                    <div class="article-content">
+                        {{ article.lead|raw }}
+                        {% if article.mainImage %}
+                            <img src="{{ article.mainImage|uploaded_image('content800') }}" srcset="{{ article.mainImage|uploaded_srcset('article') }}" sizes="(max-width: 768px) 100vw, 700px" alt="{{ article.defaultTitle|plain_text }}">
+                        {% endif %}
+                    </div>
+
+                    <div class="article-content">
+                        {{ article.content|raw }}
+                    </div>
+
+                    {{ include('frontend/media/gallery.html.twig', {entity: article}) }}
+
+                    {{ include('frontend/media/attachment.html.twig', {entity: article}) }}
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12 content-col">
+                <twig:SidebarNews size="4" columns="1" />
+                <twig:SidebarEvents size="6" />
+                {% if articleHeader.id == 10 %}
+                    <twig:SidebarGalleries size="3" />
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

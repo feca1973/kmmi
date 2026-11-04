@@ -1,0 +1,10 @@
+{% set gallery = entity.gallery %}
+
+{% if gallery and gallery.active and gallery.galleryImages|length > 0 %}
+    <div class="single-page-block-title">Galéria</div>
+    <div class="article-content">
+        <ul>
+            <li><a href="{{ path('gallery_single', {'slug': gallery.slug}) }}">{{ gallery.name }}</a></li>
+        </ul>
+    </div>
+{% endif %}

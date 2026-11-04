@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Keresés - {{ parent() }}{% endblock %}
+{% block ogTitle %}Keresés - {{ uniqueContent('page-title') }}{% endblock %}
+{# The result pages are not for the search engines. #}
+{% block robots %}<meta name="robots" content="noindex, follow">{% endblock %}
+
+{% block breadcrumb %}
+    {% set crumbs = [{label: 'Kezdőlap', url: path('app_homepage')}, {label: 'Keresés'}] %}
+    {% if term is not null %}
+        {# The breadcrumb prints its labels as HTML, the term is a text. #}
+        {% set crumbs = crumbs|merge([{label: term|e}]) %}
+    {% endif %}
+    {{ include('frontend/shared/breadcrumb.html.twig', {crumbs: crumbs, title: true}) }}
+{% endblock %}
+
+{% block body %}
+    <div class="body-content list">
+        <div class="row">
+            <div class="col-md-8 col-sm-12 content-col">
+                <div class="content">
+                    <div class="search-heading text-center">
+                        {% if hits is null %}
+                            <h1 class="search-title text-uppercase">Nincs keresőszó megadva</h1>
+                        {% else %}
+                            <h1 class="search-title text-uppercase">{{ term }} ({{ hits.totalItemCount }} db.)</h1>
+                        {% endif %}
+                    </div>
+                    <div class="search-line">
+                        <hr>
+                    </div>
+
+                    {% if hits is not null %}
+                        <ul class="list-unstyled">
+                            {% for hit in hits %}
+                                <li>
+                                    <h2><a href="{{ hit.url }}">{{ hit.title }}</a></h2>
+                                    {{ hit.lead|raw }}
+                                    <div class="clear"></div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+
+                        <div class="navigation search-pager">
+                            {{ knp_pagination_render(hits) }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12 content-col">
+                <twig:SidebarNews size="4" columns="1" />
+                <twig:SidebarEvents size="6" />
+                <twig:SidebarGalleries size="3" />
+            </div>
+        </div>
+    </div>
+{% endblock %}

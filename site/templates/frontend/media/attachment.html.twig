@@ -1,0 +1,10 @@
+{% if entity.attachments|length > 0 %}
+    <div class="single-page-block-title">Csatolmányok</div>
+    <div class="article-content">
+        <ul>
+            {% for attachment in entity.attachments|filter(attachment => attachment.path) %}
+                <li><a href="/{{ attachment.path|trim('/', 'left') }}" target="_blank" rel="noopener">{{ attachment.name ?: attachment.path }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}

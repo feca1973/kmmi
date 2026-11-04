@@ -1,8 +1,13 @@
 security:
-    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_USER
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_USER]
+
     password_hashers:
         App\Entity\User:
             algorithm: auto
+            # Passwords of the legacy (FOSUserBundle) system are verified with the legacy hasher and
+            # replaced with a modern hash on the first successful login (see UserRepository::upgradePassword()).
             migrate_from:
                 - legacy_sha512
         legacy_sha512:
@@ -10,55 +15,47 @@ security:
             encode_as_base64: true
             iterations: 5000
 
-    # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
         app_user_provider:
             entity:
                 class: App\Entity\User
-                property: emailCanonical
 
     firewalls:
         dev:
-            # Ensure dev tools and static assets are always allowed
-            pattern: ^/(_profiler|_wdt|assets|build)/
+            pattern: ^/(_profiler|_wdt|assets)/
             security: false
         main:
             lazy: true
             provider: app_user_provider
             user_checker: App\Security\UserChecker
-            stateless: true
-            entry_point: jwt
+            form_login:
+                login_path: admin_login
+                check_path: admin_login_check
+                enable_csrf: true
+                success_handler: App\Security\AjaxAuthenticationHandler
+                failure_handler: App\Security\AjaxAuthenticationHandler
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800
+            login_throttling:
+                max_attempts: 5
+                interval: '1 minute'
+            logout:
+                path: admin_logout
+                target: admin_login
 
-            json_login:
-                check_path: /api/login
-                username_path: email
-                password_path: password
-                success_handler: lexik_jwt_authentication.handler.authentication_success
-                failure_handler: lexik_jwt_authentication.handler.authentication_failure
-
-            jwt: ~
-            refresh_jwt:
-                check_path: /api/token/refresh
-
-            # https://symfony.com/doc/current/security/impersonating_user.html
-            # switch_user: true
-
-    # Note: Only the *first* matching rule is applied
     access_control:
-        - { path: ^/api/login, roles: PUBLIC_ACCESS }
-        - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS }
-        - { path: ^/api/users/register, roles: PUBLIC_ACCESS }
-        - { path: ^/api/docs, roles: PUBLIC_ACCESS }
-        - { path: ^/api/contexts, roles: PUBLIC_ACCESS }
-        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/admin/login, roles: PUBLIC_ACCESS }
+        - { path: ^/admin, roles: ROLE_ADMIN }
 
 when@test:
     security:
         password_hashers:
-            # Password hashers are resource-intensive by design to ensure security.
-            # In tests, it's safe to reduce their cost to improve performance.
+            # Password hashers are resource-intensive by design; in tests a low cost is fine.
             App\Entity\User:
                 algorithm: auto
-                cost: 4 # Lowest possible value for bcrypt
-                time_cost: 3 # Lowest possible value for argon
-                memory_cost: 10 # Lowest possible value for argon
+                cost: 4
+                time_cost: 3
+                memory_cost: 10
+                migrate_from:
+                    - legacy_sha512

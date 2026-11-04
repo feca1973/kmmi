@@ -1,0 +1,9 @@
+symfonycasts_sass:
+    root_sass:
+        - 'assets/styles/frontend.scss'
+    sass_options:
+        # Bootstrap's SCSS (vendor/twbs/bootstrap/scss) is imported as `bootstrap/...`.
+        load_path:
+            - '%kernel.project_dir%/vendor/twbs'
+        # Bootstrap itself still uses the deprecated Sass @import; its warnings are not ours to fix.
+        quiet_deps: true

@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ event.defaultTitle|plain_text }} | rendezvények | {{ parent() }}{% endblock %}
+{% block ogTitle %}{{ event.defaultTitle|plain_text }}{% endblock %}
+{% block ogDescription %}{{ event.lead|plain_text }}{% endblock %}
+{% block ogImage %}{{ (event.image ?: uniqueContent('logo'))|uploaded_image('og_image') }}{% endblock %}
+{% block metaDescription %}{{ event.lead|plain_text }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ include('frontend/shared/breadcrumb.html.twig', {
+        crumbs: [
+            {label: 'Kezdőlap', url: path('app_homepage')},
+            {label: 'Rendezvények', url: path('event_list')},
+            {label: event.type.name, url: path('event_list_by_type', {type: event.type.slug})},
+            {label: event.defaultTitle}
+        ]
+    }) }}
+{% endblock %}
+
+{% block body %}
+    <div class="body-content list">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 content-col">
+                <div class="content article-title">
+                    <h1>{{ event.defaultTitle|raw }}</h1>
+                    <p class="article-update-date">{{ eventDate(event.dateFrom, event.dateTo) }}</p>
+                    <p class="article-update-date article-place">
+                        Helyszín: <a href="{{ path('cities_single', {'region': event.city.regions.slug, 'slug': event.city.slug}) }}">{{ event.city.defaultTitle }}</a>
+                        |
+                        Jellege: <a href="{{ path('event_list_by_type', {'type': event.type.slug}) }}">{{ event.type.name }}</a>
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-8 col-sm-12 content-col">
+                <div class="content">
+                    {{ include('frontend/shared/share.html.twig', {title: event.defaultTitle}) }}
+
+                    <div class="article-content">
+                        {{ event.lead|raw }}
+                        {% if event.image %}
+                            <img src="{{ event.image|uploaded_image('content800') }}" srcset="{{ event.image|uploaded_srcset('article') }}" sizes="(max-width: 768px) 100vw, 700px" alt="{{ event.defaultTitle|plain_text }}">
+                        {% endif %}
+                    </div>
+
+                    <div class="article-content">
+                        {{ event.content|raw }}
+                    </div>
+
+                    {% if event.contactPerson %}
+                        <div class="single-page-block-title">Kapcsolattartó</div>
+                        <div class="article-content">
+                            {{ event.contactPerson|raw }}
+                            {% if event.telephone %}
+                                <p>Telefon: {{ event.telephone }}</p>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+
+                    {# An organization that is not public (inactive) has no page to link to. #}
+                    {% set organizations = event.organizations|filter(organization => organization.active) %}
+                    {% if organizations|length > 0 %}
+                        <div class="single-page-block-title">Szervező{% if organizations|length > 1 %}k{% endif %}</div>
+                        <div class="article-content">
+                            <ul>
+                                {% for organization in organizations %}
+                                    <li><a href="{{ path('organization_single', {'slug': organization.slug}) }}">{{ organization.defaultTitle|raw }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+
+                    {{ include('frontend/media/attachment.html.twig', {entity: event}) }}
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12 content-col">
+                <twig:SidebarNews size="3" columns="1" />
+                <twig:SidebarEvents size="6" />
+            </div>
+        </div>
+    </div>
+{% endblock %}

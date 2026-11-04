@@ -1,0 +1,6 @@
+{# The type of the source tells the browser if it can play the file. #}
+{% set types = {mp3: 'audio/mpeg', ogg: 'audio/ogg', oga: 'audio/ogg', wav: 'audio/wav', m4a: 'audio/mp4'} %}
+<audio controls>
+    <source src="{{ path }}" type="{{ types[path|split('.')|last|lower]|default('audio/mpeg') }}">
+    A böngésződ nem tudja lejátszani ezt a hangfájlt. <a href="{{ path }}">Letöltés</a>
+</audio>

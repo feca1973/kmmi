@@ -1,0 +1,56 @@
+@use 'colors' as *;
+@use 'fonts' as *;
+
+.carousel-inner img {
+  width: 100%;
+  height: 100%;
+}
+
+.carousel-inner {
+  max-height: 600px;
+}
+
+.carousel.slide {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 84px -15px 0;
+}
+
+.body-content.index {
+  margin-top: 25px;
+}
+
+.body-content .content-col {
+  margin-top: 25px;
+}
+
+.divider {
+  font-size: 1px;
+  height: 1px;
+  background: $menu_gray_color;
+  margin-top: 15px;
+  margin-bottom: 7px;
+}
+
+.body-content.index .content-col ul li:last-child .divider {
+  display: none;
+}
+
+.carousel-caption {
+  bottom: 20px;
+  right: 5%;
+  left: auto;
+  display: none;
+}
+
+.carousel-caption-title {
+  font-family: $menu_font_family;
+  font-size: 150%;
+  font-weight: 500;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+.body-content.index .news .content-col:first-child {
+  border-right: 1px solid $menu_gray_color;
+}

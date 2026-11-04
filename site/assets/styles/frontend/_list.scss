@@ -1,0 +1,84 @@
+@use 'fonts' as *;
+@use 'colors' as *;
+
+/* LIST PAGES */
+.list-unstyled {
+  list-style-type: none;
+}
+
+.list .content {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.list .content ul.list-unstyled li {
+  padding-bottom: 15px;
+  border-bottom: 1px solid $menu_gray_color;
+}
+
+.list .content ul.list-unstyled li:last-child {
+  border: none;
+}
+
+.list .content ul.list-unstyled li h2 {
+  background-color: transparent;
+  border-radius: unset;
+  margin-top: 5px;
+  color: $page_font_color;
+}
+
+.list .content ul.list-unstyled li p.article-update-date {
+  padding-left: 15px;
+  font-size: 90%;
+  margin-top: -15px;
+  font-style: italic;
+}
+
+.list .content ul.list-unstyled li h2 a {
+  color: $page_font_color;
+}
+
+.page-item.active .page-link {
+  background-color: $menu_border_bottom_color;
+  border-color: $menu_border_bottom_color;
+}
+
+.page-link {
+  color: $menu_border_bottom_color;
+  font-size: $page_font_size;
+  line-height: 1.25;
+}
+
+.page-link:hover {
+  color: $menu_text_color;
+}
+
+.list-image {
+  width: 25%;
+  float: left;
+  margin-right: 7px;
+}
+
+/* The departments beside the "About us" pages: the legacy items were H6, here they are level 3 headings. */
+.body-content.list .content-col .related ul li h3 {
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+/*
+ * The search page. The legacy page had a level 3 heading ("TERM (N db.)") between Bootstrap 4 columns that were not in
+ * a row (they had their own gutters) and the pager inside the list; here the heading is the H1 of the page.
+ */
+.search-heading,
+.search-line,
+.search-pager {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.body-content.list .content-col .search-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+}

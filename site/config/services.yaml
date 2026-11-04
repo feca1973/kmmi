@@ -7,6 +7,20 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    # The uploaded files (images/, attachments/) served as /uploads/...; the file manager works in this directory.
+    app.uploads_dir: '%kernel.project_dir%/public/uploads'
+
+    # The RSS feeds of the partner institutes in the footer: the URL of the feed, and the title and site of the institute.
+    app.footer_feeds:
+        'http://vmmi.org/rss/rss.php':
+            title: 'Vajdasági Magyar Művelődési Intézet'
+            url: 'http://vmmi.org'
+        'https://www.emke.ro/rss.xml':
+            title: 'Erdélyi Magyar Közművelődési Egyesület'
+            url: 'https://www.emke.ro'
+        'https://nmi.hu/feed/':
+            title: 'NMI Művelődési Intézet'
+            url: 'https://nmi.hu'
 
 services:
     # default configuration for services in *this* file
@@ -19,8 +33,15 @@ services:
     App\:
         resource: '../src/'
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
-    App\State\UserPasswordHasher:
-        bind:
-            $persistProcessor: '@api_platform.doctrine.orm.state.persist_processor'
+    # The "zoom_crop" filter of config/packages/liip_imagine.yaml: the tag names the filter (the tag that the bundle adds
+    # by itself would name it after the class).
+    App\Imagine\ZoomCropFilterLoader:
+        autoconfigure: false
+        tags:
+            - { name: liip_imagine.filter.loader, loader: zoom_crop }
+
+when@test:
+    parameters:
+        app.uploads_dir: '%kernel.project_dir%/var/test-uploads'
+        # No network in the tests.
+        app.footer_feeds: {}

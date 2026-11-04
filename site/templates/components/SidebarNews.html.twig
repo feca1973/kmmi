@@ -1,0 +1,22 @@
+{% if this.columns == 2 %}
+    <div class="row news">
+        {% for column in this.articles|batch((this.size / 2)|round(0, 'ceil')) %}
+            <div class="col-md-6 col-sm-12 content-col">
+                <ul>
+                    {% for article in column %}
+                        {{ include('frontend/sidebar/news_item.html.twig', {article: article, leadLength: 500, withImage: true}) }}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="content">
+        <h2><i class="fa fa-edit" aria-hidden="true"></i>Hírek</h2>
+        <ul>
+            {% for article in this.articles %}
+                {{ include('frontend/sidebar/news_item.html.twig', {article: article, leadLength: 300}) }}
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}

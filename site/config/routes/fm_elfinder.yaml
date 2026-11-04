@@ -1,0 +1,4 @@
+# Under /admin: the file manager is only for logged in admins (see security.yaml access_control).
+fm_elfinder:
+    resource: '@FMElfinderBundle/Resources/config/routing.yaml'
+    prefix: /admin

@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Galériák - {{ parent() }}{% endblock %}
+{% block ogTitle %}Galériák - {{ uniqueContent('page-title') }}{% endblock %}
+
+{% block breadcrumb %}
+    {{ include('frontend/shared/breadcrumb.html.twig', {
+        crumbs: [{label: 'Kezdőlap', url: path('app_homepage')}, {label: 'Adattár'}, {label: 'Multimédia'}, {label: 'Galériák'}],
+        title: true
+    }) }}
+{% endblock %}
+
+{% block body %}
+    <div class="body-content list">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 content-col">
+                <div class="content article-title">
+                    <h1>Galériák</h1>
+                </div>
+            </div>
+            <div class="col-md-8 col-sm-12 content-col">
+                <div class="content">
+                    <div class="article-content gallery-list row g-0">
+                        {# A gallery without images is not public. #}
+                        {% for gallery in appointments|filter(gallery => gallery.galleryImages|length > 0) %}
+                            <div class="col-md-4">
+                                <a href="{{ path('gallery_single', {'slug': gallery.slug}) }}">
+                                    <img alt="{{ gallery.name|plain_text }}" src="{{ gallery.coverImage|uploaded_image('gallery450') }}" width="450" height="450" loading="lazy">
+                                    <span>{{ gallery.name|raw }}</span>
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="navigation">
+                        {{ knp_pagination_render(appointments) }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12 content-col">
+                <twig:SidebarNews size="8" columns="1" />
+                <twig:SidebarEvents size="6" />
+            </div>
+        </div>
+    </div>
+{% endblock %}

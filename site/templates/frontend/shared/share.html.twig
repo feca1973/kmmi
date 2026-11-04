@@ -1,0 +1,6 @@
+{# The like and share buttons of a page. #}
+<div class="share-container">
+    {{ include('frontend/SEO/facebook_like_button.html.twig', {uri: app.request.uri}) }}
+    {{ include('frontend/SEO/share_content.html.twig', {uri: app.request.uri, title: title|plain_text}) }}
+    <div class="clearfix"></div>
+</div>

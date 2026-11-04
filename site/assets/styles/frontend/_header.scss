@@ -1,0 +1,78 @@
+@use 'colors' as *;
+@use 'fonts' as *;
+
+.header-top {
+  background: linear-gradient(90deg, rgb(170, 112, 62) 0%, #d87f0a 100%);
+  font-size: $page_font_size;
+  padding: 5px 0;
+}
+
+.header-top .header-top-right {
+  text-align: right;
+  padding: 0 30px;
+}
+
+.header-top .header-top-right a,
+.header-top .header-top-right .header-top-item {
+  margin-right: 40px;
+}
+
+.header-top a,
+.header-top .header-top-item {
+  color: $white_color;
+}
+
+.header-top .header-top-right a:last-child {
+  margin-right: 0;
+}
+
+.header-top .header-top-right .lnr {
+  color: #fff;
+  font-weight: 700;
+  margin-right: 8px;
+}
+
+header.fixed-top {
+  background-color: $menu_gray_color;
+  border-bottom: 2px solid $menu_border_bottom_color;
+}
+
+.navbar .navbar-brand {
+  width: 10%;
+}
+
+.site-logo {
+  position: absolute;
+  left: 50px;
+  display: block;
+  z-index: 10;
+  top: 3px;
+  max-width: 80px;
+}
+
+.site-logo img {
+  width: 95%;
+  height: auto;
+  border-radius: 50%;
+}
+
+.right-addon .fa {
+  right: 0;
+  position: absolute;
+  padding: 10px;
+  pointer-events: none;
+  color: #b2b7b7;
+  z-index: 100;
+  font-size: 18px;
+}
+
+#search-form {
+  width: 250px;
+}
+
+// The menu is at the left of the bar, the search box at its right edge (the legacy put it next to the last menu item).
+@media (min-width: 992px) {
+  .search-form-container {
+    margin-left: auto;
+  }
+}

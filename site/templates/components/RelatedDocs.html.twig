@@ -1,0 +1,10 @@
+<div class="content related">
+    <h2><i class="fa fa-info-circle" aria-hidden="true"></i>Részlegek, elérhetőségek</h2>
+    <ul>
+        {% for doc in this.docs %}
+            <li>
+                <h3><a{% if doc.id == this.activeId %} class="active"{% endif %} href="{{ path('document_single', {'slug': doc.slug}) }}">{{ doc.defaultTitle }}</a></h3>
+            </li>
+        {% endfor %}
+    </ul>
+</div>

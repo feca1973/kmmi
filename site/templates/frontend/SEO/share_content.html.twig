@@ -1,0 +1,13 @@
+<div class="social-share">
+    <ul>
+        <li>
+            <a class="social-icon-box" href="https://www.facebook.com/sharer.php?u={{ uri|url_encode }}&amp;t={{ title|url_encode }}" target="_blank" rel="noopener" title="Megosztás a Facebookon"><img src="{{ asset('images/social/facebook.webp') }}" width="20" height="20" alt="Facebook"></a>
+        </li>
+        <li>
+            <a class="social-icon-box" href="https://twitter.com/home?status={{ title|url_encode }}_{{ uri|url_encode }}" target="_blank" rel="noopener" title="Megosztás a Twitteren"><img src="{{ asset('images/social/twitter.webp') }}" width="20" height="20" alt="Twitter"></a>
+        </li>
+        <li>
+            <a class="social-icon-box" href="https://www.tumblr.com/share/?url={{ uri|url_encode }}&amp;title={{ title|url_encode }}" target="_blank" rel="noopener" title="Megosztás a Tumblr-en"><img src="{{ asset('images/social/tumblr.webp') }}" width="20" height="20" alt="Tumblr"></a>
+        </li>
+    </ul>
+</div>

@@ -1,0 +1,16 @@
+{# The "Fotók" block of a page: who took the photos and the link of its gallery (a gallery without images has no page). #}
+{% set photoBy = photoBy|default(null) %}
+{% set showGallery = gallery and gallery.active and gallery.galleryImages|length > 0 %}
+{% if showGallery or photoBy %}
+    <div class="single-page-block-title">Fotók</div>
+    <div class="article-content">
+        <ul class="list-unstyled">
+            {% if photoBy %}
+                <li><strong>Fotókat készítette</strong>: {{ photoBy }}</li>
+            {% endif %}
+            {% if showGallery %}
+                <li><strong>Galéria</strong>: <a href="{{ path('gallery_single', {'slug': gallery.slug}) }}">{{ gallery.name }}</a></li>
+            {% endif %}
+        </ul>
+    </div>
+{% endif %}

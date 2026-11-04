@@ -1,0 +1,65 @@
+# The admin file manager (elFinder) in a pop-up window; see docs in vendor/helios-ag/fm-elfinder-bundle/docs.
+# Access is limited to ROLE_ADMIN by the `^/admin` access_control rule (the routes live under /admin).
+#
+# Upload rules (AGENTS.md): the file type is decided from the file content (mime_detect: auto), never from the
+# name the client sends; names that could be executed or interpreted by a browser are refused (accepted_name);
+# archive/extract/edit commands are off.
+fm_elfinder:
+    assets_path: ''
+    instances:
+        # Single image chooser (image fields, CKEditor image browser and direct upload).
+        images: &images
+            locale: hu
+            editor: callback
+            callback_function: KmmiFileManager.onSelect
+            fullscreen: true
+            relative_path: true
+            connector:
+                roots:
+                    images:
+                        driver: LocalFileSystem
+                        path: '%app.uploads_dir%/images'
+                        url: /uploads/images
+                        mime_detect: auto
+                        upload_deny: ['all']
+                        upload_allow: ['image/png', 'image/jpeg']
+                        upload_order: ['deny', 'allow']
+                        upload_max_size: 15M
+                        accepted_name: &accepted_name '/^(?!.*\.(php\d*|phtml|phar|pht|phps|shtml?|cgi|pl|py|rb|sh|exe|dll|jsp|aspx?|js|html?|svgz?|htaccess|htpasswd)(\.|$))\w[\w\s\.\%\-\(\)\[\]]*$/ui'
+                        disabled_commands: &disabled_commands ['archive', 'extract', 'netmount', 'zipdl', 'edit', 'put', 'mkfile']
+        # Several images at once (gallery images).
+        gallery:
+            <<: *images
+            multiple: true
+        # Attachments: documents and audio/video files.
+        attachments:
+            locale: hu
+            editor: callback
+            callback_function: KmmiFileManager.onSelect
+            fullscreen: true
+            relative_path: true
+            multiple: true
+            connector:
+                roots:
+                    attachments:
+                        driver: LocalFileSystem
+                        path: '%app.uploads_dir%/attachments'
+                        url: /uploads/attachments
+                        mime_detect: auto
+                        upload_deny: ['all']
+                        upload_allow:
+                            - application/pdf
+                            - application/msword
+                            - application/vnd.openxmlformats-officedocument.wordprocessingml.document
+                            - application/vnd.ms-excel
+                            - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+                            - application/vnd.ms-powerpoint
+                            - application/vnd.openxmlformats-officedocument.presentationml.presentation
+                            - application/CDFV2
+                            - application/x-ole-storage
+                            - audio/mpeg
+                            - video/mp4
+                        upload_order: ['deny', 'allow']
+                        upload_max_size: 60M
+                        accepted_name: *accepted_name
+                        disabled_commands: *disabled_commands

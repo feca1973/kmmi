@@ -1,54 +1,61 @@
 {
-  "name": "kmmi/backend",
-  "description": "KMMI backend API (Symfony 7.4 + API Platform)",
+  "name": "kmmi/site",
+  "description": "KMMI website and admin (Symfony 7.4 LTS, PHP 8.5, EasyAdmin)",
   "type": "project",
   "license": "proprietary",
   "minimum-stability": "stable",
   "prefer-stable": true,
   "require": {
-    "php": "^8.4",
+    "php": "^8.5",
     "ext-ctype": "*",
     "ext-exif": "*",
     "ext-gd": "*",
     "ext-iconv": "*",
+    "ext-intl": "*",
     "ext-json": "*",
-    "api-platform/doctrine-orm": "^4.2",
-    "api-platform/symfony": "^4.0",
     "doctrine/dbal": "^4.2",
-    "doctrine/doctrine-bundle": "^2.13",
-    "doctrine/doctrine-migrations-bundle": "^3.5",
+    "doctrine/doctrine-bundle": "^3.3",
+    "doctrine/doctrine-migrations-bundle": "^4.0",
     "doctrine/orm": "^3.3",
+    "easycorp/easyadmin-bundle": "^5.8",
     "gedmo/doctrine-extensions": "^3.21",
-    "gesdinet/jwt-refresh-token-bundle": "^1.4",
-    "gregwar/image": "^2.1",
-    "lexik/jwt-authentication-bundle": "^3.1",
+    "helios-ag/fm-elfinder-bundle": "^14.0",
+    "knplabs/knp-paginator-bundle": "^6.11",
+    "league/html-to-markdown": "^5.2",
+    "liip/imagine-bundle": "^2.18",
     "monolog/monolog": "^3.6",
-    "nelmio/cors-bundle": "^2.5",
     "stof/doctrine-extensions-bundle": "^1.10",
     "symfony/asset": "^7.4",
+    "symfony/asset-mapper": "^7.4",
     "symfony/console": "^7.4",
     "symfony/dotenv": "^7.4",
-    "symfony/expression-language": "^7.4",
     "symfony/flex": "^2.8",
+    "symfony/form": "^7.4",
     "symfony/framework-bundle": "^7.4",
+    "symfony/http-client": "^7.4",
     "symfony/property-access": "^7.4",
     "symfony/property-info": "^7.4",
     "symfony/rate-limiter": "^7.4",
     "symfony/runtime": "^7.4",
     "symfony/security-bundle": "^7.4",
-    "symfony/serializer": "^7.4",
+    "symfony/security-csrf": "^7.4",
+    "symfony/translation": "^7.4",
     "symfony/twig-bundle": "^7.4",
+    "symfony/ux-twig-component": "^3.6",
     "symfony/validator": "^7.4",
-    "symfony/yaml": "^7.4"
+    "symfony/yaml": "^7.4",
+    "symfonycasts/sass-bundle": "^0.10.0",
+    "twbs/bootstrap": "^5.3"
   },
   "require-dev": {
-    "doctrine/doctrine-fixtures-bundle": "^3.6",
-    "phpmd/phpmd": "^2.15",
-    "phpstan/phpstan": "^1.12",
-    "phpunit/phpunit": "^11.5",
-    "squizlabs/php_codesniffer": "^3.10",
+    "doctrine/doctrine-fixtures-bundle": "^4.3",
+    "phpmd/phpmd": "^3.0",
+    "phpstan/phpstan": "^2.1",
+    "phpstan/phpstan-doctrine": "^2.1",
+    "phpunit/phpunit": "^13.4",
+    "squizlabs/php_codesniffer": "^4.0",
     "symfony/browser-kit": "^7.4",
-    "symfony/http-client": "^7.4",
+    "symfony/css-selector": "^7.4",
     "symfony/maker-bundle": "^1.61",
     "symfony/phpunit-bridge": "^7.4",
     "symfony/web-profiler-bundle": "^7.4",
@@ -69,32 +76,41 @@
       "symfony/flex": true,
       "symfony/runtime": true
     },
-    "sort-packages": true
+    "sort-packages": true,
+    "process-timeout": 0
   },
   "scripts": {
+    "auto-scripts": {
+      "cache:clear": "symfony-cmd",
+      "assets:install %PUBLIC_DIR%": "symfony-cmd",
+      "elfinder:install": "symfony-cmd",
+      "importmap:install": "symfony-cmd",
+      "sass:build": "symfony-cmd"
+    },
+    "post-install-cmd": [
+      "@auto-scripts"
+    ],
+    "post-update-cmd": [
+      "@auto-scripts"
+    ],
     "static-code-analyze": "@qa",
-    "qa:phpcs": "sh -c 'if [ -d src ]; then vendor/bin/phpcs --standard=PSR12 --extensions=php --ignore=migrations/*,src/Migrations/* src tests config; else echo \"Skip PHPCS: src directory missing.\"; fi'",
-    "qa:phpmd": "sh -c 'if [ -d src ]; then vendor/bin/phpmd src,tests,config text cleancode,codesize,controversial,design,naming,unusedcode --exclude migrations/*,src/Migrations/*; else echo \"Skip PHPMD: src directory missing.\"; fi'",
+    "qa:phpcs": "vendor/bin/phpcs",
+    "qa:phpmd": "sh -c 'rm -rf \"${XDG_CACHE_HOME:-$HOME/.cache}/pdepend\"; vendor/bin/phpmd analyze src tests config --format text --ruleset phpmd.xml.dist'",
     "qa:phpstan": "sh -c 'if [ -d src ]; then vendor/bin/phpstan analyse src tests --memory-limit=1G; else echo \"Skip PHPStan: src directory missing.\"; fi'",
+    "qa:phpunit": [
+      "rm -rf var/cache/test",
+      "@php bin/phpunit"
+    ],
     "qa": [
       "@qa:phpcs",
       "@qa:phpmd",
-      "@qa:phpstan"
+      "@qa:phpstan",
+      "@qa:phpunit"
     ],
-    "app:populate-search-index": "sh -c 'if [ -x bin/console ] && php bin/console list --raw 2>/dev/null | grep -q \"^fos:elastica:populate$\"; then php bin/console fos:elastica:populate; else echo \"Skip search index populate (command not available).\"; fi'",
     "regenerate-dev-db": [
       "@php bin/console doctrine:database:drop --if-exists --force --no-interaction",
       "@php bin/console doctrine:database:create --if-not-exists --no-interaction",
-      "@php bin/console doctrine:migrations:migrate --no-interaction",
-      "@php bin/console doctrine:fixtures:load --no-interaction",
-      "@app:populate-search-index"
-    ],
-    "regenerate-test-db": [
-      "@php bin/console doctrine:database:drop --if-exists --force --env=test --no-interaction",
-      "@php bin/console doctrine:database:create --if-not-exists --env=test --no-interaction",
-      "@php bin/console doctrine:schema:update --env=test --force --no-interaction",
-      "@php bin/console doctrine:fixtures:load --env=test --no-interaction",
-      "@app:populate-search-index"
+      "@php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration"
     ]
   },
   "conflict": {

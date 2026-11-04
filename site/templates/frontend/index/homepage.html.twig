@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block slider %}
+    <div class="container-fluid">
+        <twig:Slider />
+    </div>
+{% endblock %}
+
+{% block body %}
+    <div class="body-content index">
+        <h1 class="visually-hidden">{{ uniqueContent('cegnev') }}</h1>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 content-col">
+                <div class="content">
+                    <h2><i class="fa fa-edit" aria-hidden="true"></i>Hírek</h2>
+                    <twig:SidebarNews size="6" columns="2" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-sm-12 content-col">
+                <twig:SidebarMonuments size="3" />
+            </div>
+            <div class="col-md-4 col-sm-12 content-col">
+                <twig:SidebarEvents size="6" />
+            </div>
+            <div class="col-md-4 col-sm-12 content-col">
+                <twig:SidebarGalleries size="3" />
+            </div>
+        </div>
+    </div>
+{% endblock %}

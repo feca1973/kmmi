@@ -1,0 +1,9 @@
+knp_paginator:
+    # The pages around the current one in the pager (the same as the legacy site).
+    page_range: 5
+    default_options:
+        page_name: page
+        # The lists are ordered by the title of the (fetch joined) translations.
+        wrap_queries: true
+    template:
+        pagination: '@KnpPaginator/Pagination/bootstrap_v5_pagination.html.twig'

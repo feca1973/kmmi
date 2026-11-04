@@ -1,0 +1,23 @@
+{% set leadLength = 250 %}
+<div class="content">
+    <h2><i class="fa fa-fort-awesome" aria-hidden="true"></i>Emlékhelyek</h2>
+    <ul>
+        {% for monument in this.monuments %}
+            {% set lead = monument.longDescription|plain_text %}
+            <li>
+                <h3><a href="{{ path('monument_show', {'type': monument.type.slug, 'slug': monument.slug}) }}">{{ monument.name|raw }}</a></h3>
+                <div class="content-col-info">
+                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+                    Helyszín : <em>{{ monument.placeCity|raw }}</em>
+                </div>
+                <p>
+                    {% if monument.image is not null %}
+                        {{ include('frontend/shared/list_image.html.twig', {image: monument.image, alt: monument.name, sizes: '(max-width: 768px) 100vw, 75px'}) }}
+                    {% endif %}
+                    {{ lead|slice(0, leadLength) }}{% if lead|length > leadLength %}...{% endif %}
+                </p>
+                <div class="clear"></div>
+            </li>
+        {% endfor %}
+    </ul>
+</div>

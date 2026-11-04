@@ -1,0 +1,99 @@
+@use 'colors' as *;
+@use 'fonts' as *;
+
+.mobile-nav-menu,
+.mobile-category-menu,
+.category-mobile-menu,
+#resp-cart {
+  display: none;
+}
+
+.mobile-category-menu {
+  overflow: scroll;
+}
+
+/* MENU DESIGN */
+.feature-menu.navbar-nav {
+  font-family: $menu_font_family;
+}
+
+.feature-menu .nav-link {
+  display: block;
+  padding: 0.5rem 1rem;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+  font-size: 140%;
+  font-family: $menu_font_family;
+}
+
+.dropdown-menu {
+  padding: 10px;
+}
+
+.dropdown-menu.show {
+  background-color: #f9fbb8;
+  box-shadow: 0 -5px 15px 0 #55562970;
+}
+
+.dropdown-menu .dropdown-menu-col {
+  float: left;
+  padding: 15px;
+}
+
+// The titles of the mega menu columns look like headings (the legacy menu used h4/h3), they are not headings of the page.
+.dropdown-menu-title,
+.dropdown-menu-subtitle {
+  font-family: $headig_text;
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.dropdown-menu-title {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.dropdown-menu-title i.fa {
+  padding-right: 5px;
+}
+
+.dropdown-menu .dropdown-menu-col .header-dropdown a {
+  font-size: $page_font_size;
+}
+
+.dropdown-menu-col ul {
+  padding: 0;
+  list-style-type: none;
+  margin-left: -1.5rem;
+}
+
+.dropdown-menu-subtitle {
+  font-weight: 500;
+  padding: 0 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.dropdown-menu-col ul li ul {
+  margin-left: 20px;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background-color: $menu_gray_color;
+}
+
+// The mega menu (the item "Adattár") is as wide as its five columns, so they fit in one row. The legacy panel was as wide
+// as the menu items only, and its columns wrapped under each other. It still starts at the menu; the menu and the search
+// box are about as wide as the panel, so it stays inside the window.
+@media (min-width: 992px) {
+  .feature-menu .dropdown-menu.show {
+    display: flex;
+    flex-wrap: wrap;
+    width: max-content;
+    // On a low window the panel scrolls itself; the page behind it must not (the header is fixed).
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+  }
+}

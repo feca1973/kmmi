@@ -1,0 +1,56 @@
+// The public site: the legacy frontend styles (the legacy project's assets/css/frontend/*.scss) ported to
+// Bootstrap 5.3, with the same colors, fonts and layout.
+@use 'bootstrap/scss/bootstrap' with (
+  // The legacy site was built on Bootstrap 4; these keep its sizes (gutters, containers, rounding, decorations).
+  $enable-rfs: false,
+  $grid-gutter-width: 30px,
+  $container-max-widths: (sm: 540px, md: 720px, lg: 960px, xl: 1140px),
+  $border-radius: 0.25rem,
+  $border-radius-sm: 0.2rem,
+  $border-radius-lg: 0.3rem,
+  $link-decoration: none,
+  $link-hover-decoration: underline,
+  $navbar-padding-x: 1rem,
+  $pagination-padding-y: 0.5rem,
+  $breadcrumb-padding-y: 0.75rem,
+  $breadcrumb-padding-x: 1rem,
+  $breadcrumb-bg: #eaecef,
+  $breadcrumb-active-color: #6c757d,
+  $breadcrumb-divider-color: #6c757d,
+  $pagination-disabled-color: #6c757d,
+  $pagination-disabled-bg: #fff,
+  $pagination-disabled-border-color: #dee2e6,
+  $breadcrumb-border-radius: 0.25rem,
+  $carousel-control-icon-width: 20px,
+  // The arrows of the slider: the chunky chevrons of Bootstrap 4 (the thin ones of Bootstrap 5 look paler).
+  $carousel-control-prev-icon-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3e%3cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3e%3c/svg%3e"),
+  $carousel-control-next-icon-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3e%3cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3e%3c/svg%3e"),
+  $navbar-light-color: rgba(0, 0, 0, 0.5),
+  $navbar-light-hover-color: rgba(0, 0, 0, 0.7),
+  $navbar-light-active-color: rgba(0, 0, 0, 0.9),
+  $navbar-light-disabled-color: rgba(0, 0, 0, 0.3),
+  $navbar-light-toggler-border-color: rgba(0, 0, 0, 0.1),
+  $navbar-light-toggler-icon-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 0, 0, 0.5%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e"),
+  $input-color: #495057,
+  $input-border-color: #ced4da,
+  $input-placeholder-color: #6c757d,
+  $input-focus-border-color: #80bdff,
+  $focus-ring-width: 0.2rem,
+  $focus-ring-color: rgba(0, 123, 255, 0.25),
+  $dropdown-item-padding-x: 1.5rem,
+  $dropdown-border-color: rgba(0, 0, 0, 0.15)
+);
+@use 'frontend/fonts';
+// The order of the legacy build (assets/css/frontend/global.scss): equal specificity rules are decided by it.
+@use 'frontend/header';
+@use 'frontend/menu';
+@use 'frontend/list';
+@use 'frontend/footer';
+@use 'frontend/single';
+@use 'frontend/base';
+@use 'frontend/organization';
+@use 'frontend/gallery';
+@use 'frontend/responsive';
+@use 'frontend/font-awesome';
+@use 'frontend/global';
+@use 'frontend/index';

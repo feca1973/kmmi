@@ -4,7 +4,15 @@ namespace App\Doctrine\Type;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
+use InvalidArgumentException;
 
+/**
+ * The legacy `roles` column holds a PHP-serialized array (or a comma separated list).
+ *
+ * The $platform parameters are required by the DBAL Type interface, so PHPMD's unused parameter rule is suppressed.
+ *
+ * @SuppressWarnings("PHPMD.UnusedFormalParameter")
+ */
 final class LegacyRolesType extends Type
 {
     public const NAME = 'array';
@@ -28,9 +36,19 @@ final class LegacyRolesType extends Type
             return $value;
         }
 
-        throw new \InvalidArgumentException(sprintf('Expected roles as array or string, got %s.', get_debug_type($value)));
+        throw new InvalidArgumentException(
+            sprintf('Expected roles as array or string, got %s.', get_debug_type($value))
+        );
     }
 
+    /**
+     * unserialize() has no non-throwing mode: invalid input is expected here (comma separated roles),
+     * so its warning is silenced on purpose.
+     *
+     * @SuppressWarnings("PHPMD.ErrorControlOperator")
+     *
+     * @return array<int|string, mixed>
+     */
     public function convertToPHPValue($value, AbstractPlatform $platform): array
     {
         if ($value === null || $value === '') {
@@ -42,7 +60,7 @@ final class LegacyRolesType extends Type
         }
 
         if (is_string($value)) {
-            $unserialized = @unserialize($value);
+            $unserialized = @unserialize($value, ['allowed_classes' => false]);
             if ($unserialized !== false || $value === 'b:0;') {
                 return is_array($unserialized) ? $unserialized : [];
             }

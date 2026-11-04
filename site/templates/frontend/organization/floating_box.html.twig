@@ -1,0 +1,38 @@
+{% set rows = [
+    {title: 'Alapítás éve', value: organization.institutionYear},
+    {title: 'Cím', value: organization.placeAddress},
+    {title: 'Vezető', value: organization.officialPersonName},
+    {title: 'Telefon', value: organization.officialPersonTelephoneOffice},
+    {title: 'E-mail', value: organization.officialEmail},
+    {title: 'Kapcsolattartó', value: organization.contactPersonName},
+    {title: 'Kapcsolattartó e-mail', value: organization.contactEmail},
+    {title: 'Szervezet honlapja', value: organization.contactUrl, url: true}
+] %}
+{% set gallery = organization.gallery %}
+<div class="floating-box {{ class }}">
+    <p class="box-title">Adatlap</p>
+    <table>
+        {% for row in rows|filter(row => row.value) %}
+            <tr>
+                <th>{{ row.title }}:</th>
+                <td>
+                    {% if row.url|default(false) %}
+                        <a href="{{ row.value starts with 'http' ? row.value : 'http://' ~ row.value }}" target="_blank" rel="noopener">{{ row.value }}</a>
+                    {% else %}
+                        {{ row.value }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        {% if gallery and gallery.active and gallery.galleryImages|length > 0 %}
+            <tr>
+                <th>Kapcsolódó fotók:</th>
+                <td>
+                    <a href="{{ path('gallery_single', {'slug': gallery.slug}) }}" target="_blank">
+                        {{ gallery.name }}
+                    </a>
+                </td>
+            </tr>
+        {% endif %}
+    </table>
+</div>
