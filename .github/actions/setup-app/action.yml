@@ -17,7 +17,9 @@ runs:
         extensions: ctype, exif, gd, iconv, intl, json, mbstring, pdo_mysql, zip
         tools: composer:v2
         coverage: none
-        ini-values: memory_limit=1G
+        # EGPCS: the default of the php Docker image (dev). setup-php sets GPCS, then the `php -S` server of the
+        # FileManagerTest does not see the environment variables (APP_ENV, APP_SECRET, DATABASE_URL).
+        ini-values: memory_limit=1G, variables_order=EGPCS
 
     - name: Composer cache
       uses: actions/cache@v6
