@@ -1,0 +1,34 @@
+name: Set up the app
+description: PHP 8.5 with the extensions of the app, the Composer cache and `composer install` in site/.
+
+inputs:
+  composer-args:
+    description: Extra arguments of `composer install` (for example `--no-dev -o`).
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+    - name: PHP 8.5 and Composer
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.5'
+        extensions: ctype, exif, gd, iconv, intl, json, mbstring, pdo_mysql, zip
+        tools: composer:v2
+        coverage: none
+        ini-values: memory_limit=1G
+
+    - name: Composer cache
+      uses: actions/cache@v6
+      with:
+        path: ~/.cache/composer
+        key: composer-${{ runner.os }}-${{ hashFiles('site/composer.lock') }}
+        restore-keys: composer-${{ runner.os }}-
+
+    # The auto-scripts of the install (cache:clear, assets:install, elfinder:install, importmap:install, sass:build)
+    # download the importmap packages and Dart Sass, so this step needs network.
+    - name: composer install
+      shell: bash
+      working-directory: site
+      run: composer install --no-interaction --prefer-dist ${{ inputs.composer-args }}

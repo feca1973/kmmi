@@ -1,0 +1,77 @@
+name: CI
+
+# Runs on every push to a branch other than main, and on every pull request into main. The merge into main is allowed
+# only when the three jobs below are green (GitHub ruleset on main, see README.md).
+on:
+  push:
+    branches-ignore: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  # CI only, not a secret: the install runs `cache:clear`, which needs a non-empty value.
+  APP_SECRET: ci-only-not-a-secret
+
+defaults:
+  run:
+    working-directory: site
+
+jobs:
+  # The production build: no dev packages, compiled assets and a warm production cache. `asset-map:compile` runs only
+  # in production, no test covers it.
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    env:
+      APP_ENV: prod
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup-app
+        with:
+          composer-args: --no-dev -o
+      - run: composer validate --strict
+      - run: php bin/console asset-map:compile
+      - run: php bin/console cache:warmup
+
+  static-analysis:
+    name: static-analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup-app
+      - run: composer qa:phpcs
+      - run: composer qa:phpmd
+      - run: composer qa:phpstan
+
+  tests:
+    name: tests
+    runs-on: ubuntu-latest
+    env:
+      APP_ENV: test
+      # Throw-away database of the CI service container, not a secret. The test database is `app_test` (the
+      # Symfony test env adds the `_test` suffix; the schema is created by the tests).
+      DATABASE_URL: mysql://root:root@127.0.0.1:3306/app?serverVersion=8.0&charset=utf8mb4
+    services:
+      mysql:
+        image: mysql:8.0.46
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: app
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -proot"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup-app
+      - run: composer qa:phpunit
