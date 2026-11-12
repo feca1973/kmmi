@@ -29,7 +29,7 @@ class ArticleTranslation
     #[ORM\Column(name: 'slug', type: Types::STRING, length: 255, nullable: false)]
     private ?string $slug = null;
 
-    #[ORM\Column(name: '`lead`', type: Types::TEXT, nullable: true)]
+    #[ORM\Column(name: 'lead_content', type: Types::TEXT, nullable: true)]
     private ?string $lead = null;
 
     #[ORM\Column(name: 'content', type: Types::TEXT, nullable: true)]

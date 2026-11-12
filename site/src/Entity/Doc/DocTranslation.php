@@ -25,7 +25,7 @@ class DocTranslation
     #[ORM\JoinColumn(name: 'translatable_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     private ?object $translatable = null;
 
-    #[ORM\Column(name: '`lead`', type: Types::TEXT, nullable: true)]
+    #[ORM\Column(name: 'lead_content', type: Types::TEXT, nullable: true)]
     private ?string $lead = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
