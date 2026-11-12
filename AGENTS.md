@@ -162,6 +162,8 @@ Minden uj fejlesztesnel, modositasnal es kodreviewnal ezeket alapertelmezett sza
   nem ujraepul magatol, ezert kodvaltozas utan elavult maradna, es hamis hibat adna (a `cache:clear --env=test` ezt nem torli).
   Egy-egy teszt kezi futtatasa elott kodvaltozas utan `rm -rf var/cache/test`.
 - A teszt-, statikus elemzesi es stilus konfiguracio a repoban van (`phpunit.dist.xml`, `phpstan.dist.neon`, `phpcs.xml.dist`).
+- CI: a GitHub Actions (`.github/workflows/ci.yml`) harom job-ban ugyanezt futtatja (`build` az eles buildhez, `static-analysis`, `tests`); a `main`-be
+  csak pull requesten at, harom zold job utan lehet mergelni, kozvetlen push nem lehet. A CI nem hasznal titkot.
 
 ## Fejlesztoi es eles kornyezet
 
@@ -170,7 +172,9 @@ Minden uj fejlesztesnel, modositasnal es kodreviewnal ezeket alapertelmezett sza
   fut ugyanilyen kontenerben. A `vendor` mappat a kontenerben kell generalni (`composer install --no-dev -o`), utana cache-urites
   es migraciok.
 - Minden oldalnak sajat php-fpm pool es nginx vhost kell (egyedi pool nev es socket).
-- A `README.md` ket kulon fejezetben (1. dev telepites, 2. production elesites) pontosan leirja a folyamatot; minden olyan valtozasnal
+- A repo publikus: hostnev, IP, jelszo es szerver-konfig titok nem kerulhet bele (a README helyorzokkel, `<oldal>` stb. ir). Az eles szerveren
+  csak a `site/` es a `scripts/` mappa van (sparse checkout), a repo gyokerenek fajljai (pl. a dev `docker-compose.yml`) nem.
+- A `README.md` harom fejezetben (1. dev telepites, 2. production elesites, 3. CI) pontosan leirja a folyamatot; minden olyan valtozasnal
   frissitendo, amely a telepitest vagy az elesitest erinti.
 - Titkok (jelszavak, kulcsok, `.env.local`) nem kerulnek a repoba; az eles szerveren elnek.
 
