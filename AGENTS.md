@@ -138,7 +138,11 @@ Minden uj fejlesztesnel, modositasnal es kodreviewnal ezeket alapertelmezett sza
 
 ## Adatbazis konvenciok
 
-- A regi (a legacy rendszerbol atvett) tablak es mezok valtozatlanul maradnak.
+- A regi (a legacy rendszerbol atvett) tablak es mezok valtozatlanul maradnak. A merado az ELES adatbazis semaja, nem a
+  legacy kod vagy egy regi dump: az eles adatbazisban a `lead` oszlop a `articles_translation`, `cities_translation`,
+  `docs_translations` es `organizations_translation` tablaban `lead_content` (a MySQL 8 foglalt szava miatt atnevezve), az
+  `events_translation` es a `media` tablaban `lead`. A dev dumpot az eles adatbazisbol kell venni; eltereskor a
+  `doctrine:schema:update --dump-sql` nem lehet ures, az entityket kell az elesihez igazitani, az elest nem modositjuk.
 - Minden uj, altalunk fejlesztett adatbazis datum mezo `unix timestamp` tipusu `integer` kell legyen.
 - Az entityk traiteket hasznalnak a kozos mezokhoz (pl. `HasUnixTimestampsTrait` mintaja a Powerbox projektben): trait csak ott
   hasznalhato, ahol azonos tipusu es tulajdonsagu mezok vannak.

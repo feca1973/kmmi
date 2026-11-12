@@ -36,6 +36,12 @@ sh scripts/project-init.sh --dump=../new_site_docs_and_data/kmmi.sql
 
 Ez **eldobja es ujra letrehozza** a dev adatbazist, majd betolti a dumpot. A regi tablak valtozatlanok maradnak:
 az entityk ugy vannak megirva, hogy a `doctrine:schema:update --dump-sql` ures eredmenyt ad a betoltott dumpon.
+A dumpot az **eles adatbazisbol** kell venni (a merado az eles sema; egy regebbi dumpban pl. a `lead_content` oszlop neve `lead`).
+Friss dump a sajat gepre (a `<szerver>` az eles szerver SSH cime; a fajl a repon kivul marad):
+
+```sh
+ssh root@<szerver> "docker exec mysql sh -c 'mysqldump -uroot -p\"\$MYSQL_ROOT_PASSWORD\" --single-transaction --no-tablespaces --default-character-set=utf8mb4 kmmi'" > ../new_site_docs_and_data/kmmi.sql
+```
 Az uj tablak migraciokkal (`migrations/`) kerulnek be; a regi tablakra sosem futtatunk `schema:update`-et.
 A kereses indexe (`search_document`) uj tabla, a dumpban nincs benne: a `--dump` kapcsolo a betoltes utan lefuttatja az
 `app:search:reindex` parancsot is (kb. 20 mp 5500 oldalra); kesobb, ha a dumpot kezzel toltod be, azt kell kezzel futtatni.
